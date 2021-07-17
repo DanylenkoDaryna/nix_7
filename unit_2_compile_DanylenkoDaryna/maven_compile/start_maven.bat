@@ -1,4 +1,5 @@
-cd ..\maven_compile\app
-mvn clean
-mvn package
-java -jar target\maven_compile.jar
+cd ..\maven_compile
+cd app
+call mvn clean
+call mvn package
+call java -jar target\maven_compile.jar

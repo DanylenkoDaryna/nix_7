@@ -15,9 +15,9 @@ call ant run
 cd ..
 cd maven_compile
 cd app
-mvn clean
-mvn package
-java -jar target\maven_compile.jar
+call mvn clean
+call mvn package
+call java -jar target\maven_compile.jar
 
 
 
