@@ -18,8 +18,8 @@
         <jar destfile="build/jar/ant_compile.jar" basedir="build/classes">
             <manifest>
                 <attribute name="Main-Class" value="ua.com.alevel.MainWorkspace"/>
-                <attribute name="Class-Path" value="libs/joda-time-2.10.10.jar"/>
-                <attribute name="Class-Path" value="libs/hirondelle-date4j-1.5.1.jar"/>
+                <attribute name="Class-Path1" value="libs/joda-time-2.10.10.jar"/>
+                <attribute name="Class-Path2" value="libs/hirondelle-date4j-1.5.1.jar"/>
             </manifest>
             <zipgroupfileset dir="libs" includes="*.jar"/>
         </jar>
