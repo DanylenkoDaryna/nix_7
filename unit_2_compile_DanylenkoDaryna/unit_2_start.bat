@@ -11,7 +11,7 @@ cd ..
 cd maven_compile\app
 call start_maven.bat
 call java -jar target\maven_compile.jar
-
-
+cd ..
+cd ..
 
 
