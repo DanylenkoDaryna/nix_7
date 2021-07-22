@@ -34,3 +34,4 @@ public class Ex3EndOfLessons {
         return countShortBreaks*SHORT_BREAK + countLongBreaks*LONG_BREAK;
     }
 }
+
