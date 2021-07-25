@@ -16,23 +16,21 @@ public class Ex2SortingSymbols {
         Scanner scanner = new Scanner(System.in, "UTF-8");
 
         boolean cycleBreaker = true;
-        while(cycleBreaker){
+        while(cycleBreaker) {
             System.out.println(EX_2_DESCRIPTION + "\n"+ STOP_EX);
             String inputValue = scanner.nextLine().replaceAll(" ","");
 
-            if(inputValue.equals("")){
+            if (inputValue.equals("")) {
                 System.out.println("write something...");
-
-            }else if(inputValue.equals("exit")||
-                    inputValue.equals("stop")||
-                    inputValue.equals("q")){
-                cycleBreaker=false;
-            }else{
+            } else if (inputValue.equals("exit") ||
+                    inputValue.equals("stop") ||
+                    inputValue.equals("q")) {
+                cycleBreaker = false;
+            } else {
                 char[] inputArr = inputValue.toCharArray();
                 Arrays.sort(inputArr);
-
-                for(char symbol:inputArr){
-                    if(Character.isLetter(symbol)){
+                for(char symbol:inputArr) {
+                    if(Character.isLetter(symbol)) {
                         countLetterAppearance(symbol, inputArr);
                     }
                 }
@@ -40,10 +38,10 @@ public class Ex2SortingSymbols {
         }
     }
 
-    private static void countLetterAppearance(char symbol, char[] inputArr){
+    private static void countLetterAppearance(char symbol, char[] inputArr) {
         int numOfRepeating = 0;
-        for(int i=0; i<inputArr.length; i++){
-            if(inputArr[i]==symbol){
+        for(int i=0; i<inputArr.length; i++) {
+            if (inputArr[i]==symbol) {
                 numOfRepeating+=1;
                 inputArr[i]='0';
             }

@@ -16,21 +16,16 @@ public class Ex3EndOfLessons {
     }
 
     public static void exercise3(int lessonNumber) {
-
         System.out.println(EX_3_DESCRIPTION +"\n"+ STOP_EX);
-
-
-        int timeToLessonEnd = lessonNumber*LESSON_DURATION + countBreaks(lessonNumber);
-        int endLessonHours = HOUR_OF_FIRST_LESSON + timeToLessonEnd/60;
-        int endLessonMinutes = timeToLessonEnd%60;
+        int timeToLessonEnd = lessonNumber * LESSON_DURATION + countBreaks(lessonNumber);
+        int endLessonHours = HOUR_OF_FIRST_LESSON + timeToLessonEnd / 60;
+        int endLessonMinutes = timeToLessonEnd % 60;
                 System.out.println(endLessonHours + " " + endLessonMinutes);
     }
 
-    private static int countBreaks(int lessonNum){
-
+    private static int countBreaks(int lessonNum) {
         int countShortBreaks = lessonNum/2;
         int countLongBreaks = (lessonNum-1) - countShortBreaks;
-
         return countShortBreaks*SHORT_BREAK + countLongBreaks*LONG_BREAK;
     }
 }
