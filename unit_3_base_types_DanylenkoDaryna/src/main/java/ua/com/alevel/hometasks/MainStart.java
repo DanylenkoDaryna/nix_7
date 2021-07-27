@@ -18,7 +18,7 @@ public class MainStart{
 
 
     public static void main(String[] args) {
-
+        
         Scanner scanner = new Scanner(System.in, "UTF-8");
 
         boolean mainCycleBreaker = true;
