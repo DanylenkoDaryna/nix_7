@@ -8,6 +8,9 @@
     <modules>
         <module>unit_3_base_types_DanylenkoDaryna</module>
         <module>unit_4_arrays_DanylenkoDaryna</module>
+        <module>test</module>
+        <module>tmp</module>
+        <module>unit_4_arrays</module>
     </modules>
     <name>app</name>
     <url>http://maven.apache.org</url>
