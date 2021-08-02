@@ -1,6 +1,8 @@
 package ua.com.alevel.data;
 
-//public abstract class Figure {
+
+import ua.com.alevel.utils.ChessGame;
+
 public abstract class Figure{
 
     protected Chessman chessman;
@@ -8,30 +10,25 @@ public abstract class Figure{
     protected String currentPosition;
     protected Side side;
 
-    public Figure(String startPosition, String currentPosition, Side side){
+    Figure(String startPosition, Side side){
 
         this.startPosition = startPosition;
-        this.currentPosition = currentPosition;
+        this.currentPosition = startPosition;
         this.side = side;
-
+        setChessman();
     }
 
-//todo moving for figures
-//    moveTo();
-//    ruleFor();
+    Figure(){ }
 
-//
-//    @Override
-//    public String toString(){
-//
-//        return "Figure{" +
-//                "chessman=" + chessman +
-//                ", startPosition='" + startPosition + '\'' +
-//                ", currentPosition='" + currentPosition + '\'' +
-//                ", side=" + side +
-//                '}';
-//
-//    }
+    public abstract boolean isMoveValidByFigureRules(int srcRow, int srcCol, int destRow, int destCol);
+
+    void isEnemyKingBeaten(int destRow, int destCol){
+
+        if(ChessGame.board[destRow][destCol] != null &&
+                ChessGame.board[destRow][destCol].getChessman().name().endsWith("KING")){
+            ChessGame.finishGame();
+        }
+    }
 
     @Override
     public String toString(){
@@ -40,7 +37,7 @@ public abstract class Figure{
 
     }
 
-    public Chessman getChessman(){
+    private Chessman getChessman(){
 
         return chessman;
     }
@@ -52,7 +49,7 @@ public abstract class Figure{
         return startPosition;
     }
 
-    public void setStartPosition(String startPosition) {
+    public void setStartPosition(String startPosition){
         this.startPosition = startPosition;
     }
 
@@ -75,6 +72,5 @@ public abstract class Figure{
 
         this.side = side;
     }
-
 
 }

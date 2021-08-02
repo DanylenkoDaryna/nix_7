@@ -6,21 +6,63 @@ import java.util.Scanner;
 
 public class ChessGame{
 
-    static Figure[][] board;
+    public static Figure[][] board;
     private static final int NUM_OF_CELLS = 8;
     private static final int NUM_OF_ROWS = 8;
 
-    private static Side userSide;
-    private static Side enemySide;
-    private Side currentSide;
+    public static Side userSide;
+    public static Side enemySide;
+    public static Side currentSide;
 
     public ChessGame(){
+
         System.out.println("Start new Chess game...");
         board = new Figure[NUM_OF_ROWS][NUM_OF_CELLS];
         currentSide = Side.WHITES;
     }
 
-    public static void chooseSide(Scanner scanner){
+    public static void startNewGame(Scanner scanner){
+
+        ChessGame chessGame = new ChessGame();
+        ChessGame.chooseSide(scanner);
+        chessGame.start();
+        boolean continueGame = true;
+        while (continueGame){
+
+            System.out.println("------------------------------------------------");
+            System.out.println("Choose one of commands: 'draw' to draw game ");
+            System.out.println("Choose one of commands: 'end' to end game ");
+            System.out.println("Choose one of commands: press 'Enter' to continue");
+            System.out.println("------------------------------------------------");
+
+            String command = scanner.nextLine();
+
+            if (command.matches("draw")){
+
+                chessGame.declareDraw();
+                continueGame = false;
+
+            } else if (command.matches("end")){
+
+                chessGame.finishGame();
+                continueGame = false;
+            } else if (command.matches("")){
+
+                chessGame.chooseFigure(scanner);
+
+            } else{
+
+                System.out.println("Incorrect input. try again..");
+            }
+        }
+    }
+
+    private static void chooseSide(Scanner scanner){
+
+        System.out.println("------------------------------------------------");
+        System.out.println("Choose side: BLACKS - input '0'.. ");
+        System.out.println("Choose side: WHITES - input '1'.. ");
+        System.out.println("------------------------------------------------");
 
         String chosenSide = scanner.nextLine().trim();
         reformatUserInput(chosenSide);
@@ -43,61 +85,62 @@ public class ChessGame{
         input.trim().replaceAll(" ", "");
     }
 
-    public void start(){
+    private void start(){
+
         System.out.println("New game begins...");
         placeFiguresOnBoard();
     }
 
-    //todo auto placing figures on start
+
     private static void placeFiguresOnBoard(){
+
         System.out.println("placing figures on board...");
 
-        board[0][0]= new Rook("a8","a8",enemySide);
-        board[0][1]= new Knight("b8","b8",enemySide);
-        board[0][2]= new Bishop("c8","c8",enemySide);
-        board[0][3]= new Queen("d8","d8",enemySide);
-        board[0][4]= new King("e8","e8",enemySide);
-        board[0][5]= new Bishop("f8","f8",enemySide);
-        board[0][6]= new Knight("g8","j8",enemySide);
-        board[0][7]= new Rook("h8","h8",enemySide);
+        board[0][0]= new Rook("h1",enemySide);
+        board[0][1]= new Knight("h2",enemySide);
+        board[0][2]= new Bishop("h3",enemySide);
+        board[0][3]= new Queen("h4",enemySide);
+        board[0][4]= new King("h5",enemySide);
+        board[0][5]= new Bishop("h6",enemySide);
+        board[0][6]= new Knight("h7",enemySide);
+        board[0][7]= new Rook("h8",enemySide);
 
-        board[1][0]= new Pawn("a7","a7",enemySide);
-        board[1][1]= new Pawn("b7","b7",enemySide);
-        board[1][2]= new Pawn("c7","c7",enemySide);
-        board[1][3]= new Pawn("d7","d7",enemySide);
-        board[1][4]= new Pawn("e7","e7",enemySide);
-        board[1][5]= new Pawn("f7","f7",enemySide);
-        board[1][6]= new Pawn("g7","j7",enemySide);
-        board[1][7]= new Pawn("h7","h7",enemySide);
+        board[1][0]= new Pawn("g1",enemySide);
+        board[1][1]= new Pawn("g2",enemySide);
+        board[1][2]= new Pawn("g3",enemySide);
+        board[1][3]= new Pawn("g4",enemySide);
+        board[1][4]= new Pawn("g5",enemySide);
+        board[1][5]= new Pawn("g6",enemySide);
+        board[1][6]= new Pawn("g7",enemySide);
+        board[1][7]= new Pawn("g8",enemySide);
 
 
-        board[6][0]= new Pawn("a2","a2",userSide);
-        board[6][1]= new Pawn("b2","b2",userSide);
-        board[6][2]= new Pawn("c2","c2",userSide);
-        board[6][3]= new Pawn("d2","d2",userSide);
-        board[6][4]= new Pawn("e2","e2",userSide);
-        board[6][5]= new Pawn("f2","f2",userSide);
-        board[6][6]= new Pawn("g2","j2",userSide);
-        board[6][7]= new Pawn("h2","h2",userSide);
+        board[6][0]= new Pawn("b1",userSide);
+        board[6][1]= new Pawn("b2",userSide);
+        board[6][2]= new Pawn("b3",userSide);
+        board[6][3]= new Pawn("b4",userSide);
+        board[6][4]= new Pawn("b5",userSide);
+        board[6][5]= new Pawn("b6",userSide);
+        board[6][6]= new Pawn("b7",userSide);
+        board[6][7]= new Pawn("b8",userSide);
 
-        board[7][0]= new Rook("a1","a1",userSide);
-        board[7][1]= new Knight("b1","b1",userSide);
-        board[7][2]= new Bishop("c1","c1",userSide);
-        board[7][3]= new Queen("d1","d1",userSide);
-        board[7][4]= new King("e1","e1",userSide);
-        board[7][5]= new Bishop("f1","f1",userSide);
-        board[7][6]= new Knight("g1","j1",userSide);
-        board[7][7]= new Rook("h1","h1",userSide);
-
+        board[7][0]= new Rook("a1",userSide);
+        board[7][1]= new Knight("a2",userSide);
+        board[7][2]= new Bishop("a3",userSide);
+        board[7][3]= new Queen("a4",userSide);
+        board[7][4]= new King("a5",userSide);
+        board[7][5]= new Bishop("a6",userSide);
+        board[7][6]= new Knight("a7",userSide);
+        board[7][7]= new Rook("a8",userSide);
 
         drawBoard();
     }
 
-    //todo drawBoard()
-    public static void drawBoard(){
+    private static void drawBoard(){
 
         System.out.println("draving board.. ");
-        System.out.print("\t 1\t 2 \t  3\t  4\t   5\t6 \t 7\t 8");
+        System.out.println();
+
         for (int row = 0; row < NUM_OF_ROWS; row++)
         {
             System.out.println("");
@@ -106,11 +149,11 @@ public class ChessGame{
             for (int cell = 0; cell < NUM_OF_CELLS; cell++)
             {
                 if (cell == 0) {
-                    System.out.print(Character.toString((char) (row+97)) + " ");
+                    System.out.print(Character.toString((char) (97+NUM_OF_CELLS-1-row)) + " ");
                 }
                 if(board[row][cell] != null){
                     System.out.print("| " + board[row][cell].toString() + " ");
-                }else{
+                }else {
                     System.out.print("| " + "\u2001" + " ");
                 }
             }
@@ -118,121 +161,182 @@ public class ChessGame{
         }
         System.out.println("");
         System.out.println("  --------------------------------------");
+        System.out.print("\t 1\t 2 \t  3\t  4\t   5\t6 \t 7\t 8");
+        System.out.println("");
 
     }
 
-    public void chooseFigure(){
-        System.out.println("please, choose your figure to move.. ");
-        this.chooseDestination();
+    private void chooseFigure(Scanner scanner){
 
-    }
+        System.out.println("Please, choose your figure to move.. ");
+        String figurePos = scanner.nextLine();
+        reformatUserInput(figurePos);
 
-    public void chooseDestination() {
-        System.out.println("please, choose Destination for your figure to move.. ");
-        //todo maybe without checking
-        if (checkAbilityToMoveTo("b2")) {
-            System.out.println("you can move");
-            //todo moving for figures
-            this.moveTo("b2");
-        } else {
-            System.out.println("you can`t move");
-            this.chooseFigure();
+        if(figurePos.matches("^[a-h][1-8]$")){
+
+            int srcRow = getRowFrom(figurePos);
+            int srcCol = getColFrom(figurePos);
+
+            if(board[srcRow][srcCol]==null){
+                System.out.println("empty cell");
+
+            } else if (board[srcRow][srcCol].getSide() != this.currentSide){
+
+                System.out.println("It's not your turn to move");
+                chooseFigure(scanner);
+
+            }else{
+
+                System.out.println("You choose figure.. " +
+                        board[srcRow][srcCol].toString());
+            }
+            this.chooseDestination(scanner, board[srcRow][srcCol]);
+
+        }else{
+
+            System.out.println("!Wrong figure input!");
+            chooseFigure(scanner);
         }
     }
 
-    private boolean checkAbilityToMoveTo(String movingPosition) {
+
+    private void chooseDestination(Scanner scanner, Figure figure){
+
+        System.out.println("please, choose destination to move.. ");
+        String destPos = scanner.nextLine();
+        reformatUserInput(destPos);
+        if(destPos.matches("^[a-h][1-8]$")){
+
+            if (checkAbilityToMoveTo(figure.getCurrentPosition(), destPos)){
+
+                this.moveTo(destPos, figure);
+
+            } else {
+
+                this.chooseFigure(scanner);
+            }
+        }else{
+
+            System.out.println("wrong figure input");
+            chooseFigure(scanner);
+        }
+    }
+
+    public static int getRowFrom(String movingPosition){
+
+        return 'h' - movingPosition.charAt(0) ;
+    }
+
+    public static int getColFrom(String movingPosition){
+
+        return Character.getNumericValue(movingPosition.charAt(1)) - 1;
+    }
+
+    private boolean checkAbilityToMoveTo(String sourcePosition, String movingPosition){
+
         System.out.println("checking ability to move to position " + movingPosition);
-        return true;
 
+        int srcRow = getRowFrom(sourcePosition);
+        int srcCol = getColFrom(sourcePosition);
+
+        int destRow = getRowFrom(movingPosition);
+        int destCol = getColFrom(movingPosition);
+
+        if(board[destRow][destCol] == null){
+
+            return board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol);
+
+        }
+
+        if (board[srcRow][srcCol].getSide() != this.currentSide){
+
+            System.out.println("It's not your turn to move");
+            return false;
+        }
+
+        if (board[srcRow][srcCol].getSide() == board[destRow][destCol].getSide()){
+
+            System.out.println("Figure cannot beat another figure with the same colour");
+            return false;
+        }
+
+        return board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol);
     }
 
-    private void moveTo(String movingPosition) {
-        System.out.println("moving figure on position.. " + movingPosition);
-        //to do - beating other figures, adding points, remowing figures
+    private void moveTo(String nextPosition, Figure figure){
+
+        System.out.println("moving figure on position.. " + nextPosition);
+
+        int srcRow = getRowFrom(figure.getCurrentPosition());
+        int srcCol = getColFrom(figure.getCurrentPosition());
+
+        int destRow = getRowFrom(nextPosition);
+        int destCol = getColFrom(nextPosition);
+        figure.setCurrentPosition(nextPosition);
+
+        board[destRow][destCol] = board[srcRow][srcCol];
+        board[srcRow][srcCol] = null;
         this.changeSide();
+        drawBoard();
     }
 
-    private void changeSide() {
+    private void changeSide(){
 
         System.out.println("changing side..");
-        if (currentSide == Side.BLACKS) {
+        if (currentSide == Side.BLACKS){
+
             currentSide = Side.WHITES;
-        } else {
+        } else{
+
             currentSide = Side.BLACKS;
         }
-        //todo should be here this.chooseFigure(); ???
-        this.drawBoard();
     }
 
-    //todo finish of Game
-    public void finishGame() {
+    public static void finishGame(){
 
-        if (userSide == Side.BLACKS) {
-            this.declareLooseTo(Side.WHITES);
-            this.declareWinTo(Side.BLACKS);
-        } else {
-            this.declareLooseTo(Side.BLACKS);
-            this.declareWinTo(Side.WHITES);
+        if (currentSide == Side.BLACKS){
+
+            declareLooseTo(Side.WHITES);
+            declareWinTo(Side.BLACKS);
+        } else{
+
+            declareLooseTo(Side.BLACKS);
+            declareWinTo(Side.WHITES);
         }
 
-        this.drawBoard();
-
-        System.out.println("End Chess game...");
+        drawBoard();
+        System.out.println("End Chess game...\n");
     }
 
-    public void declareDraw() {
+    public static void declareDraw(){
 
         System.out.println("it`s a draw..");
         System.out.println("End Chess game...");
 
     }
 
-    private void declareWinTo(Side winner) {
+    private static void declareWinTo(Side winner){
 
         System.out.println(winner + " wins!!!!!");
 
     }
 
-    private void declareLooseTo(Side loser) {
+    private static void declareLooseTo(Side loser){
 
-        this.check(loser);
-        this.mate(loser);
+        check(loser);
+        mate(loser);
 
     }
 
-    private void check(Side enemySide) {
+    private static void check(Side enemySide){
 
         System.out.println("check to " + enemySide);
 
     }
 
-    private void mate(Side enemySide) {
+    private static void mate(Side enemySide){
 
         System.out.println("mate to " + enemySide);
 
-    }
-
-    public Figure[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(Figure[][] board) {
-        this.board = board;
-    }
-
-    public Side getUserSide() {
-        return userSide;
-    }
-
-    public void setUserSide(Side userSide) {
-        this.userSide = userSide;
-    }
-
-    public Side getCurrentSide() {
-        return currentSide;
-    }
-
-    public void setCurrentSide(Side currentSide) {
-        this.currentSide = currentSide;
     }
 }

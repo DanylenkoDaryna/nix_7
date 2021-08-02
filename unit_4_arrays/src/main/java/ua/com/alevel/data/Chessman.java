@@ -10,11 +10,13 @@ public enum Chessman {
 
     private String figureUnicode;
 
-    Chessman(String figureUnicode) {
+    Chessman(String figureUnicode){
+
         this.figureUnicode = figureUnicode;
     }
 
-    public String getFigureUnicode() {
+    public String getFigureUnicode(){
+
         return figureUnicode;
     }
 }

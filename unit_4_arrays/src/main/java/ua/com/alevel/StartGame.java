@@ -1,42 +1,35 @@
 package ua.com.alevel;
 
-import ua.com.alevel.data.Side;
 import ua.com.alevel.utils.ChessGame;
-
 import java.util.Scanner;
+
 
 public class StartGame{
 
     public static void main(String[] args){
 
-        ChessGame chessGame = new ChessGame();
-        //todo start menu
+        Scanner scanner = new Scanner(System.in, "UTF-8");
 
-        System.out.println("Choose side: BLACKS - input '0', WHITES - input '1'.. ");
-        Scanner scanner = new Scanner(System.in);
+        boolean mainCycleBreaker = true;
+        while (mainCycleBreaker) {
+            System.out.println("----- Welcome to chess! -----");
+            System.out.println("----------------------------");
+            System.out.println("----- enter one of commands -----");
+            System.out.println("----- s to Start New Game -----");
+            System.out.println("----- q to Quit -----");
+            System.out.println("----------------------------");
+            String inputValue = scanner.nextLine().replaceAll(" ", "");
 
-        ChessGame.chooseSide(scanner);
-        chessGame.start();
+            if (inputValue.equals("q")){
 
-        boolean continueGame = true;
-        while (continueGame) {
-            System.out.println("Choose command: draw, end, _ ");
-            String command = scanner.nextLine();
+                 mainCycleBreaker = false;
+             } else if(inputValue.equals("s")){
 
-            if (command.matches("draw")) {
-                chessGame.declareDraw();
-                continueGame = false;
+                ChessGame.startNewGame(scanner);
+            }else{
 
-            } else if (command.matches("end")) {
-                chessGame.finishGame();
-                continueGame = false;
-            } else if (command.matches("")) {
-                chessGame.chooseFigure();
-
-            } else {
-                System.out.println("Incorrect input. try again..");
+                System.out.println("Incorrect input. Try Again");
             }
         }
-
     }
 }
