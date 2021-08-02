@@ -2,4 +2,4 @@
 
 call mvn clean
 call mvn package
-call java -jar target\unit_4.jar
+call java "-Dfile.encoding=UTF8" -jar target\unit_4.jar
