@@ -50,6 +50,7 @@ public class MainStart {
             }
             System.out.println(BORDER);
         }
+        scanner.close();
     }
 
     private static void doEx3(Scanner scanEx3) {

@@ -36,5 +36,6 @@ public class Ex1SumNumsInString {
                 System.out.println(sumResult);
             }
         }
+        scanner.close();
     }
 }

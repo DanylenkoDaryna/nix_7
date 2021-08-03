@@ -36,6 +36,7 @@ public class Ex2SortingSymbols {
                 }
             }
         }
+        scanner.close();
     }
 
     private static void countLetterAppearance(char symbol, char[] inputArr) {
