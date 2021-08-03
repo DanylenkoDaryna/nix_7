@@ -12,6 +12,7 @@
         <module>tmp</module>
         <module>unit_4_arrays</module>
         <module>unit_5_strings</module>
+        <module>StringLib</module>
     </modules>
     <name>app</name>
     <url>http://maven.apache.org</url>

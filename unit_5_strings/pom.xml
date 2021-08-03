@@ -15,8 +15,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>ua.com.alevel</groupId>
+            <artifactId>StringLib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
-        <finalName>reversestring</finalName>
+        <finalName>unit_5</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
