@@ -52,7 +52,7 @@ public class Bishop extends Figure{
             return isAnyFiguresOnYourWay(srcRow, srcCol, destRow, destCol, rowOffset, colOffset);
         }else{
 
-            System.out.println("Bishop does not move that way..");
+            System.out.println(INCORRECT_MOVE);
             return false;
         }
     }
@@ -64,7 +64,7 @@ public class Bishop extends Figure{
 
             if(ChessGame.board[i][j] != null){
 
-                System.out.println("There are other figures on your way..");
+                System.out.println(ANOTHER_FIGURES_ON_YOUR_WAY);
                 return false;
             }
         }

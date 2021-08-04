@@ -10,6 +10,10 @@ public abstract class Figure{
     protected String currentPosition;
     protected Side side;
 
+    public static final String INCORRECT_MOVE = "This figure doesn`t move like that..";
+    public static final String INCORRECT_ATTACK = "This figure doesn`t beat like that..";
+    public static final String ANOTHER_FIGURES_ON_YOUR_WAY = "There are another figures in your way..";
+
     Figure(String startPosition, Side side){
 
         this.startPosition = startPosition;
@@ -37,7 +41,7 @@ public abstract class Figure{
 
     }
 
-    private Chessman getChessman(){
+    public Chessman getChessman(){
 
         return chessman;
     }

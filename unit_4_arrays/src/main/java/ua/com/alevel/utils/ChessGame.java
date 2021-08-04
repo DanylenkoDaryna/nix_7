@@ -6,22 +6,58 @@ import java.util.Scanner;
 
 public class ChessGame{
 
-    public static Figure[][] board;
+    private static Scanner scanner = getScanner();
     private static final int NUM_OF_CELLS = 8;
     private static final int NUM_OF_ROWS = 8;
+    public static Figure[][] board = new Figure[NUM_OF_ROWS][NUM_OF_CELLS];
 
     public static Side userSide;
     public static Side enemySide;
-    public static Side currentSide;
+    public static Side currentSide = Side.WHITES;
 
-    public ChessGame(){
+    private ChessGame(){
 
         System.out.println("Start new Chess game...");
-        board = new Figure[NUM_OF_ROWS][NUM_OF_CELLS];
-        currentSide = Side.WHITES;
     }
 
-    public static void startNewGame(Scanner scanner){
+    private static Scanner getScanner() {
+
+        if(scanner!=null) {
+            return scanner;
+        }else return new Scanner(System.in, "UTF-8");
+    }
+
+    public static void launching(){
+
+        boolean mainCycleBreaker = true;
+        while (mainCycleBreaker) {
+            System.out.println("----- Welcome to chess! -----");
+            System.out.println("----------------------------");
+            System.out.println("----- enter one of commands -----");
+            System.out.println("----- s to Start New Game -----");
+            System.out.println("----- q to Quit -----");
+            System.out.println("----------------------------");
+            String inputValue = getScanner().nextLine().replaceAll(" ", "");
+
+            switch (inputValue) {
+                case "q":
+
+                    mainCycleBreaker = false;
+                    scanner.close();
+                    break;
+                case "s":
+
+                    ChessGame.startNewGame(getScanner());
+                    break;
+                default:
+
+                    System.out.println("Incorrect input. Try Again");
+                    break;
+            }
+        }
+    }
+
+    private static void startNewGame(Scanner scanner){
 
         ChessGame chessGame = new ChessGame();
         ChessGame.chooseSide(scanner);
@@ -41,11 +77,13 @@ public class ChessGame{
 
                 chessGame.declareDraw();
                 continueGame = false;
+                scanner.close();
 
             } else if (command.matches("end")){
 
-                chessGame.finishGame();
+                chessGame.finishGame(userSide, enemySide);
                 continueGame = false;
+                scanner.close();
             } else if (command.matches("")){
 
                 chessGame.chooseFigure(scanner);
@@ -64,8 +102,8 @@ public class ChessGame{
         System.out.println("Choose side: WHITES - input '1'.. ");
         System.out.println("------------------------------------------------");
 
-        String chosenSide = scanner.nextLine().trim();
-        reformatUserInput(chosenSide);
+        String chosenSide = reformatUserInput(scanner.nextLine());
+
         if(chosenSide.matches("^0$")){
             userSide = Side.BLACKS;
             enemySide = Side.WHITES;
@@ -76,13 +114,12 @@ public class ChessGame{
             System.out.println("wrong input1");
             chooseSide(scanner);
         }
-
         System.out.println("user choose his side as.. " + userSide);
     }
 
-    private static void reformatUserInput(String input){
+    private static String reformatUserInput(String input){
 
-        input.trim().replaceAll(" ", "");
+        return input.trim().replaceAll(" ", "");
     }
 
     private void start(){
@@ -199,7 +236,6 @@ public class ChessGame{
         }
     }
 
-
     private void chooseDestination(Scanner scanner, Figure figure){
 
         System.out.println("please, choose destination to move.. ");
@@ -260,7 +296,42 @@ public class ChessGame{
             return false;
         }
 
+        if (isEnemyKingInMateDanger(movingPosition)){
+
+        }
+
         return board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol);
+    }
+
+    private boolean isEnemyKingInCheckDanger(int srcRow, int srcCol, int destRow, int destCol){
+
+       if(board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol)){
+
+           System.out.println("Enemy King In Danger");
+           checkTo(enemySide);
+           return true;
+       }
+        return false;
+    }
+
+    private boolean isEnemyKingInMateDanger(String movingPosition){
+
+        int destRow = getRowFrom(movingPosition);
+        int destCol = getColFrom(movingPosition);
+
+        if(currentSide.equals(Side.WHITES) && board[destRow][destCol].getChessman().equals(Chessman.BLACK_KING)){
+            System.out.println("King of " + Side.BLACKS + " defeated!!!");
+            checkTo(Side.BLACKS);
+            mateTo(Side.BLACKS);
+            return true;
+
+        }else if(currentSide.equals(Side.BLACKS) && board[destRow][destCol].getChessman().equals(Chessman.WHITE_KING)){
+            System.out.println("King of " + Side.WHITES + " defeated!!!");
+            checkTo(Side.WHITES);
+            mateTo(Side.WHITES);
+            return true;
+        }
+        return false;
     }
 
     private void moveTo(String nextPosition, Figure figure){
@@ -292,51 +363,51 @@ public class ChessGame{
         }
     }
 
+    private static void checkTo(Side looser){
+
+        System.out.println("check to " + looser);
+
+    }
+
+    private static void mateTo(Side looser){
+
+        finishGame(looser, currentSide);
+
+    }
+
     public static void finishGame(){
 
-        if (currentSide == Side.BLACKS){
+        declareLooseTo(enemySide);
+        declareWinTo(userSide);
 
-            declareLooseTo(Side.WHITES);
-            declareWinTo(Side.BLACKS);
-        } else{
-
-            declareLooseTo(Side.BLACKS);
-            declareWinTo(Side.WHITES);
-        }
-
-        drawBoard();
         System.out.println("End Chess game...\n");
     }
 
-    public static void declareDraw(){
+    private static void finishGame(Side loser, Side winner){
+
+        declareLooseTo(loser);
+        declareWinTo(winner);
+
+        System.out.println("End Chess game...\n");
+        launching();
+    }
+
+    private static void declareDraw(){
 
         System.out.println("it`s a draw..");
-        System.out.println("End Chess game...");
-
+        System.out.println("End Chess game...\n");
+        launching();
     }
 
     private static void declareWinTo(Side winner){
 
-        System.out.println(winner + " wins!!!!!");
+        System.out.println(winner + " wins!!!");
 
     }
 
     private static void declareLooseTo(Side loser){
 
-        check(loser);
-        mate(loser);
-
-    }
-
-    private static void check(Side enemySide){
-
-        System.out.println("check to " + enemySide);
-
-    }
-
-    private static void mate(Side enemySide){
-
-        System.out.println("mate to " + enemySide);
+        System.out.println(loser + " lose!!!");
 
     }
 }

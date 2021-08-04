@@ -41,7 +41,7 @@ public class Pawn extends Figure{
 
             }else if(ChessGame.board[destRow][destCol]!=null){
 
-                System.out.println("Pawn does not beat like that 0.. ");
+                System.out.println(INCORRECT_ATTACK);
                 return false;
             }
         } else return isDiagonalMoveValid(srcRow, srcCol, destRow, destCol);
@@ -64,11 +64,11 @@ public class Pawn extends Figure{
                 return moveIsValid (destRow, destCol);
 
             }else{
-                System.out.println("Pawn does not beat like that 1.. ");
+                System.out.println(INCORRECT_ATTACK);
                 return false;
             }
         }else{
-            System.out.println("Pawn does not beat like that 2.. ");
+            System.out.println(INCORRECT_ATTACK);
             return false;
         }
     }

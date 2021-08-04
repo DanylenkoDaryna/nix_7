@@ -32,7 +32,7 @@ public class Knight extends Figure{
             return true;
         }else{
 
-            System.out.println("This figure moves by another rules");
+            System.out.println(INCORRECT_MOVE);
             return false;
         }
 

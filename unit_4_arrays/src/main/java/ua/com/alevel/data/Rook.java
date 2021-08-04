@@ -4,7 +4,6 @@ import ua.com.alevel.utils.ChessGame;
 
 public class Rook extends Figure{
 
-
     public Rook(String startPosition, Side side){
 
         super(startPosition, side);
@@ -40,7 +39,7 @@ public class Rook extends Figure{
             for(int j = srcCol + offset; j != destCol; j += offset){
                 if(ChessGame.board[srcRow][j] != null){
 
-                    System.out.println("There are another figures in your way");
+                    System.out.println(ANOTHER_FIGURES_ON_YOUR_WAY);
                     return false;
                 }
             }
@@ -57,14 +56,14 @@ public class Rook extends Figure{
 
                 if(ChessGame.board[i][srcCol] != null){
 
-                    System.out.println("There are another figures in your way");
+                    System.out.println(ANOTHER_FIGURES_ON_YOUR_WAY);
                     return false;
                 }
             }
             return moveIsValid (destRow, destCol);
         }
         else{
-            System.out.println("Rook doesn`t move like that..");
+            System.out.println(INCORRECT_MOVE);
             return false;
         }
     }
