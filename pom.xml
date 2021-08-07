@@ -13,6 +13,7 @@
         <module>unit_4_arrays</module>
         <module>unit_5_strings</module>
         <module>StringLib</module>
+        <module>module_1</module>
     </modules>
     <name>app</name>
     <url>http://maven.apache.org</url>
