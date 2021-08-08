@@ -2,4 +2,4 @@
 
 call mvn clean
 call mvn package
-call java -jar target\module_1.jar
+call java -jar target\module1.jar

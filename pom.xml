@@ -7,9 +7,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>unit_3_base_types_DanylenkoDaryna</module>
-        <module>unit_4_arrays_DanylenkoDaryna</module>
-        <module>test</module>
-        <module>tmp</module>
         <module>unit_4_arrays</module>
         <module>unit_5_strings</module>
         <module>StringLib</module>
