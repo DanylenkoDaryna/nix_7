@@ -11,9 +11,9 @@ public class CheckValidInput{
     private static final char[] arrayOfBrackets = REGEX_BRACKETS.toCharArray();
     private static final String BORDER = "----------------------------\n";
     private static final String COMMANDS = "Input line with bracers" +
-            "or 'q' to exit \n";
-    private static final String INCORRECT_INPUT = "Incorrect input. Try Again..";
-    private static final String CORRECT_INPUT = "Input is correct.";
+            " or 'q' to exit \n";
+    private static final String INCORRECT_INPUT = "Incorrect input. Try Again..1";
+    private static final String CORRECT_INPUT = "Input is correct.1";
 
 
     public static void startMenu(Scanner scanner){
@@ -32,7 +32,6 @@ public class CheckValidInput{
         }
     }
 
-
     private static void checkInput(String inputValue){
 
         char[] symbols = inputValue.toCharArray();
@@ -45,14 +44,12 @@ public class CheckValidInput{
                 }
             }
         }
-
         if(checkBrackets(brackets)){
             System.out.println(CORRECT_INPUT);
         }else{
             System.out.println(INCORRECT_INPUT);
         }
     }
-
 
     private static boolean checkBrackets(ArrayList<Character> brackets){
 
