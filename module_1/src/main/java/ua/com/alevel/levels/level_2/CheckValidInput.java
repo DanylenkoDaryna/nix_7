@@ -4,7 +4,7 @@ package ua.com.alevel.levels.level_2;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CheckValidInput {
+public class CheckValidInput{
 
 
     private static final String REGEX_BRACKETS = "[](){}";
@@ -16,19 +16,17 @@ public class CheckValidInput {
     private static final String CORRECT_INPUT = "Input is correct.";
 
 
-    public static void startMenu(Scanner scanner) {
+    public static void startMenu(Scanner scanner){
 
         boolean cycleBreaker = true;
-        while (cycleBreaker) {
+        while (cycleBreaker){
             System.out.println(BORDER + COMMANDS + BORDER);
-
             String inputValue = scanner.nextLine().trim().replaceAll(" ", "");
-
-            if (inputValue.equals("q")) {
+            if(inputValue.equals("q")){
                 cycleBreaker = false;
-            } else if (inputValue.equals("")) {
+            }else if (inputValue.equals("")){
                 System.out.println(CORRECT_INPUT);
-            } else {
+            }else{
                 checkInput(inputValue);
             }
         }
@@ -40,17 +38,17 @@ public class CheckValidInput {
         char[] symbols = inputValue.toCharArray();
         ArrayList<Character> brackets = new ArrayList<>();
 
-        for (char symbol : symbols) {
-            for (char bracket : arrayOfBrackets) {
+        for (char symbol : symbols){
+            for (char bracket : arrayOfBrackets){
                 if (bracket == symbol) {
                     brackets.add(symbol);
                 }
             }
         }
 
-        if (checkBrackets(brackets)) {
+        if(checkBrackets(brackets)){
             System.out.println(CORRECT_INPUT);
-        } else {
+        }else{
             System.out.println(INCORRECT_INPUT);
         }
     }
@@ -58,7 +56,7 @@ public class CheckValidInput {
 
     private static boolean checkBrackets(ArrayList<Character> brackets){
 
-        if (brackets.size() % 2 != 0){
+        if(brackets.size() % 2 != 0){
             return false;
         }
         return checkSequence(brackets) || checkDeep(brackets);
@@ -66,33 +64,34 @@ public class CheckValidInput {
 
     private static boolean checkDeep(ArrayList<Character> brackets){
 
-        for (int i = 0; i < brackets.size() / 2; i++) {
+        for(int i = 0; i < brackets.size() / 2; i++){
 
-            if (brackets.get(i).equals('[') && brackets.get(brackets.size() - 1 - i).equals(']')) {
+            if(brackets.get(i).equals('[') &&
+                    brackets.get(brackets.size() - 1 - i).equals(']')){
                 continue;
-            } else if (brackets.get(i).equals('{') && brackets.get(brackets.size() - 1 - i).equals('}')) {
+            }else if (brackets.get(i).equals('{') &&
+                    brackets.get(brackets.size() - 1 - i).equals('}')){
                 continue;
-            } else if (brackets.get(i).equals('(') && brackets.get(brackets.size() - 1 - i).equals(')')) {
+            }else if (brackets.get(i).equals('(') &&
+                    brackets.get(brackets.size() - 1 - i).equals(')')){
                 continue;
-            } else return false;
+            }else return false;
         }
-
         return true;
     }
 
     private static boolean checkSequence(ArrayList<Character> brackets){
 
-        for (int i = 0; i < brackets.size() - 2; i += 2){
+        for(int i = 0; i < brackets.size() - 2; i += 2){
 
-            if (brackets.get(i).equals('[') && brackets.get(i + 1).equals(']')) {
+            if(brackets.get(i).equals('[') && brackets.get(i + 1).equals(']')){
                 continue;
-            } else if (brackets.get(i).equals('{') && brackets.get(i + 1).equals('}')) {
+            }else if (brackets.get(i).equals('{') && brackets.get(i + 1).equals('}')){
                 continue;
-            } else if (brackets.get(i).equals('(') && brackets.get(i + 1).equals(')')) {
+            }else if (brackets.get(i).equals('(') && brackets.get(i + 1).equals(')')){
                 continue;
-            } else return false;
+            }else return false;
         }
-
         return true;
     }
 
