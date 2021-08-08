@@ -20,9 +20,9 @@ public class ChessGame{
         System.out.println("Start new Chess game...");
     }
 
-    private static Scanner getScanner() {
+    private static Scanner getScanner(){
 
-        if(scanner!=null) {
+        if(scanner!=null){
             return scanner;
         }else return new Scanner(System.in, "UTF-8");
     }
@@ -39,14 +39,11 @@ public class ChessGame{
             System.out.println("----------------------------");
             String inputValue = getScanner().nextLine().replaceAll(" ", "");
 
-            switch (inputValue) {
+            switch (inputValue){
                 case "q":
-
                     mainCycleBreaker = false;
-                    scanner.close();
                     break;
                 case "s":
-
                     ChessGame.startNewGame(getScanner());
                     break;
                 default:
@@ -63,7 +60,7 @@ public class ChessGame{
         ChessGame.chooseSide(scanner);
         chessGame.start();
         boolean continueGame = true;
-        while (continueGame){
+        while(continueGame){
 
             System.out.println("------------------------------------------------");
             System.out.println("Choose one of commands: 'draw' to draw game ");
@@ -73,23 +70,22 @@ public class ChessGame{
 
             String command = scanner.nextLine();
 
-            if (command.matches("draw")){
+            if(command.matches("draw")){
 
                 chessGame.declareDraw();
                 continueGame = false;
                 scanner.close();
 
-            } else if (command.matches("end")){
+            }else if(command.matches("end")){
 
                 chessGame.finishGame(userSide, enemySide);
                 continueGame = false;
                 scanner.close();
-            } else if (command.matches("")){
+            }else if(command.matches("")){
 
                 chessGame.chooseFigure(scanner);
 
-            } else{
-
+            }else{
                 System.out.println("Incorrect input. try again..");
             }
         }

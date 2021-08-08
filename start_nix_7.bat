@@ -15,3 +15,7 @@ cd ..
 cd unit_5_strings
 call unit_5_start.bat
 cd ..
+
+cd module1
+call module1.bat
+cd ..
