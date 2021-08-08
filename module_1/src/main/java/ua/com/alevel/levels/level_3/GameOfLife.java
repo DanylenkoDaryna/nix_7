@@ -83,8 +83,8 @@ public class GameOfLife{
         board = new int[ROWS][COLS];
 
         Random rand = new Random();
-        for (int i = 0; i < rows; i++){
-            for (int j = 0; j < cols; j++){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 board[i][j] = rand.nextInt(2);
             }
         }
@@ -92,9 +92,9 @@ public class GameOfLife{
 
     private static void showBoard(){
 
-        for (int i = 0; i < ROWS; i++){
+        for (int i = 0; i < ROWS; i++) {
             System.out.print("|");
-            for (int j = 0; j < COLS; j++){
+            for (int j = 0; j < COLS; j++) {
                 System.out.print("[" + board[i][j] + "]");
             }
             System.out.print("|\n");
@@ -104,7 +104,7 @@ public class GameOfLife{
 
     private static void doAllIterations(int numOfIterations){
 
-        while (numOfIterations!=0){
+        while (numOfIterations != 0) {
             nextState();
             numOfIterations--;
         }
@@ -114,19 +114,19 @@ public class GameOfLife{
     private static void nextState(){
 
         int[][] temp = new int[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++){
-            for (int j = 0; j < COLS; j++){
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
                 int countAliveNeighbors = getAliveNeighbors(i, j);
-                if (board[i][j] == 1){
-                    if (countAliveNeighbors == 2 || countAliveNeighbors == 3){
+                if (board[i][j] == 1) {
+                    if (countAliveNeighbors == 2 || countAliveNeighbors == 3) {
                         temp[i][j] = 1;
-                    }else if (countAliveNeighbors < 2){
+                    } else if (countAliveNeighbors < 2) {
                         temp[i][j] = 0;
-                    }else {
+                    } else {
                         temp[i][j] = 0;
                     }
                 }else{
-                    if (countAliveNeighbors == 3){
+                    if (countAliveNeighbors == 3) {
                         temp[i][j] = 1;
                     }else {
                         temp[i][j] = 0;
@@ -152,5 +152,4 @@ public class GameOfLife{
         }
         return count;
     }
-
 }
