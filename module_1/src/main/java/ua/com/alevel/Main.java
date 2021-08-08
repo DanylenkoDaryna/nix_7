@@ -25,20 +25,18 @@ public class Main {
         Scanner scanner = new Scanner(System.in, "UTF-8");
 
         boolean mainCycleBreaker = true;
-        while (mainCycleBreaker) {
+        while (mainCycleBreaker){
 
-            System.out.println(MAIN_DESCRIPTION + "\n" + EX_1_DESCRIPTION + "\n" + EX_2_DESCRIPTION
-                    + "\n" + EX_3_DESCRIPTION + "\n" + EX_4_DESCRIPTION + "\n" + EX_5_DESCRIPTION + "\n"
-                    + STOP_PROGRAM + BORDER);
+            welcoming();
             String inputValue = scanner.nextLine().replaceAll(" ", "");
 
-            if (inputValue.matches("[1-5]")) {
-                switch (Integer.parseInt(inputValue)) {
-                    case 1:
+            if (inputValue.matches("[1-5]")){
+                switch (Integer.parseInt(inputValue)){
+                    case 1:{
                         String input = scanner.nextLine().replaceAll(" ", "");
                         FindUniqueSymbols.getUniques(input);
                         break;
-
+                    }
                     case 2:
                         KnightMovements.startMenu(scanner);
                         break;
@@ -56,15 +54,21 @@ public class Main {
                         System.out.println("Incorrect number");
                         break;
                 }
-            } else if (inputValue.equals("q")) {
-
+            } else if (inputValue.equals("q")){
                 mainCycleBreaker = false;
-            } else {
-
+            } else{
                 System.out.println("Incorrect input. Try Again");
             }
             System.out.println(BORDER);
         }
         scanner.close();
+    }
+
+    private static void welcoming(){
+
+        System.out.println(MAIN_DESCRIPTION + "\n" + EX_1_DESCRIPTION
+                + "\n" + EX_2_DESCRIPTION  +"\n" + EX_3_DESCRIPTION +
+                "\n" + EX_4_DESCRIPTION + "\n" + EX_5_DESCRIPTION + "\n"
+                + STOP_PROGRAM + BORDER);
     }
 }

@@ -33,7 +33,6 @@ public class KnightMovements {
             switch (inputValue) {
                 case "q":
                     cycleBreaker = false;
-                    scanner.close();
                     break;
                 case "s":
                     tryToMakeMove(scanner);
