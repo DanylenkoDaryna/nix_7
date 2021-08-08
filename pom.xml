@@ -11,6 +11,7 @@
         <module>unit_5_strings</module>
         <module>StringLib</module>
         <module>module1</module>
+        <module>unit_6_logs_and_tests</module>
     </modules>
     <name>app</name>
     <url>http://maven.apache.org</url>
