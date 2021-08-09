@@ -3,7 +3,7 @@ package ua.com.alevel.levels.level_1;
 
 import java.util.Scanner;
 
-public class KnightMovements{
+public class KnightMovements {
 
     private static final int CELLS_IN_L_FIGURE_BODY = 2;
     private static final int CELLS_IN_L_FIGURE_TOP = 1;
@@ -22,15 +22,12 @@ public class KnightMovements{
     private static final String IMPOSSIBLE_MOVE = "This move impossible for knight. Try again...";
     private static final String INCORRECT_INPUT = "Incorrect input. Try Again..";
 
-    public static void startMenu(Scanner scanner){
-
+    public static void startMenu(Scanner scanner) {
         boolean cycleBreaker = true;
-        while (cycleBreaker){
+        while (cycleBreaker) {
             System.out.println(WELCOMING + BORDER + COMMANDS + COMMAND_ONE + COMMAND_TWO + BORDER);
-
             String inputValue = scanner.nextLine().replaceAll(" ", "");
-
-            switch (inputValue){
+            switch (inputValue) {
                 case "q":
                     cycleBreaker = false;
                     break;
@@ -44,45 +41,36 @@ public class KnightMovements{
         }
     }
 
-    private static void tryToMakeMove(Scanner scanner){
-
+    private static void tryToMakeMove(Scanner scanner) {
         System.out.println(CHOOSE_START);
         String sourcePosition = correctInput(scanner.nextLine());
 
         System.out.println(CHOOSE_DESTINATION);
         String destPosition = correctInput(scanner.nextLine());
-
-        if (checkInput(sourcePosition) && checkInput(destPosition)){
-
+        if (checkInput(sourcePosition) && checkInput(destPosition)) {
             int srcRow = getRowFrom(sourcePosition);
             int srcCol = getColFrom(sourcePosition);
-
             int destRow = getRowFrom(destPosition);
             int destCol = getColFrom(destPosition);
-
-            if (isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol)){
-
+            if (isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol)) {
                 System.out.println(POSSIBLE_MOVE);
-            } else{
+            } else {
                 System.out.println(IMPOSSIBLE_MOVE);
             }
-        } else{
+        } else {
             System.out.println(INCORRECT_INPUT);
         }
     }
 
-    private static int getRowFrom(String movingPosition){
-
+    private static int getRowFrom(String movingPosition) {
         return LETTER_DISPLACEMENT - movingPosition.charAt(0);
     }
 
-    private static int getColFrom(String movingPosition){
-
+    private static int getColFrom(String movingPosition) {
         return Integer.parseInt(movingPosition.substring(1, movingPosition.length()));
     }
 
-    private static String correctInput(String input){
-
+    private static String correctInput(String input) {
         return input.trim().replaceAll(" ", "");
     }
 

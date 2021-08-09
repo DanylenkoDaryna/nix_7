@@ -3,7 +3,7 @@ package ua.com.alevel.levels.level_1;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class SquareOfTriangle{
+public class SquareOfTriangle {
 
     private static final String REGEX_FOR_COORDINATES = "^[-+]?[0-9]+[;][-+]?[0-9]+$";
     private static final String BORDER = "----------------------------\n";
@@ -11,43 +11,36 @@ public class SquareOfTriangle{
             "or 'q' to exit \n";
     private static final String INCORRECT_INPUT = "Incorrect input. Try Again..";
 
-
-    public static void startMenu(Scanner scanner){
-
+    public static void startMenu(Scanner scanner) {
         boolean cycleBreaker = true;
-        while(cycleBreaker){
+        while (cycleBreaker) {
             System.out.println(BORDER + COMMANDS + BORDER);
             System.out.println("Coordinate A: ");
-
             String inputValue = scanner.nextLine().trim().replaceAll(" ", "");
-
-            if(inputValue.equals("q")){
+            if (inputValue.equals("q")) {
                 cycleBreaker = false;
-            }else{
+            } else {
                 String pointA = inputValue.trim().replaceAll(" ", "");
                 System.out.println("Coordinate B: ");
                 String pointB = scanner.nextLine().trim().replaceAll(" ", "");
                 System.out.println("Coordinate C: ");
                 String pointC = scanner.nextLine().trim().replaceAll(" ", "");
-
-                if(inputCorrect(pointA, pointB, pointC)){
+                if (inputCorrect(pointA, pointB, pointC)) {
                     countSquare(pointA, pointB, pointC);
-                }else{
+                } else {
                     System.out.println(INCORRECT_INPUT);
                 }
             }
         }
     }
 
-    private static boolean inputCorrect(String pointA, String pointB, String pointC){
-
+    private static boolean inputCorrect(String pointA, String pointB, String pointC) {
         return pointA.matches(REGEX_FOR_COORDINATES)
                 && pointB.matches(REGEX_FOR_COORDINATES)
                 && pointC.matches(REGEX_FOR_COORDINATES);
     }
 
-    private static void countSquare(String pointA, String pointB, String pointC){
-
+    private static void countSquare(String pointA, String pointB, String pointC) {
         String[] firstCoord = pointA.split(";");
         String[] secondCoord = pointB.split(";");
         String[] thirdCoord = pointC.split(";");

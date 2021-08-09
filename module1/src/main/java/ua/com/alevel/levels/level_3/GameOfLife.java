@@ -3,7 +3,7 @@ package ua.com.alevel.levels.level_3;
 import java.util.Random;
 import java.util.Scanner;
 
-public class GameOfLife{
+public class GameOfLife {
 
     private static final String WELCOMING = "----- Welcome to Game of life! -----\n";
     private static final String BORDER = "-------------------------------------------\n";
@@ -14,74 +14,67 @@ public class GameOfLife{
     private static int COLS;
     private static int[][] board;
 
-    public static void startMenu(Scanner scanner){
-
+    public static void startMenu(Scanner scanner) {
         boolean cycleBreaker = true;
-        while (cycleBreaker){
+        while (cycleBreaker) {
             System.out.println(WELCOMING + BORDER + COMMANDS + BORDER);
             String inputValue = scanner.nextLine().replaceAll(" ", "");
 
-            if (inputValue.equalsIgnoreCase("q")){
+            if (inputValue.equalsIgnoreCase("q")) {
                 cycleBreaker = false;
                 scanner.close();
-            }else if (inputValue.equalsIgnoreCase("s")){
+            } else if (inputValue.equalsIgnoreCase("s")) {
                 startNewGame(scanner);
             }
         }
     }
 
-    private static void startNewGame(Scanner scanner){
-
+    private static void startNewGame(Scanner scanner) {
         System.out.print("Enter num of iterations: ");
         String iterations = scanner.nextLine().trim().replaceAll(" ", "");
         System.out.println("Enter rows in the board..");
         String rows = scanner.nextLine().trim().replaceAll(" ", "");
         System.out.println("Enter columns in the board..");
         String cols = scanner.nextLine().trim().replaceAll(" ", "");
-
-        if(checkIterations(iterations) && checkRowCol(rows, cols)){
+        if (checkIterations(iterations) && checkRowCol(rows, cols)) {
             int iterationNum = Integer.parseInt(iterations);
             int rowNum = Integer.parseInt(rows);
             int colNum = Integer.parseInt(cols);
             doZeroIteration(iterationNum, rowNum, colNum);
-        }else System.out.println(INCORRECT_INPUT);
+        } else System.out.println(INCORRECT_INPUT);
 
     }
 
-    private static boolean checkIterations(String iterations){
+    private static boolean checkIterations(String iterations) {
         return iterations.matches("^[1-9]+$");
     }
 
-    private static boolean checkRowCol(String rows, String cols){
-
-        if(rows.matches("^[0-9]+$") && cols.matches("^[0-9]+$")){
+    private static boolean checkRowCol(String rows, String cols) {
+        if (rows.matches("^[0-9]+$") && cols.matches("^[0-9]+$")) {
             int x = Integer.parseInt(rows);
             int y = Integer.parseInt(cols);
-            if (x < MIN_SIZE_OF_BOARD || y < MIN_SIZE_OF_BOARD){
+            if (x < MIN_SIZE_OF_BOARD || y < MIN_SIZE_OF_BOARD) {
                 System.out.println("This board is too small!");
                 return false;
-            }else if(x > Integer.MAX_VALUE || y > Integer.MAX_VALUE){
+            } else if (x > Integer.MAX_VALUE || y > Integer.MAX_VALUE) {
                 System.out.println("This board is too big!");
                 return false;
-            }else{
+            } else {
                 return true;
             }
-        }else return false;
+        } else return false;
     }
 
-    private static void doZeroIteration(int iterations, int rows, int cols){
-
+    private static void doZeroIteration(int iterations, int rows, int cols) {
         fillBoardByRandom(rows, cols);
         showBoard();
         doAllIterations(iterations);
     }
 
-    private static void fillBoardByRandom(int rows, int cols){
-
-        ROWS=rows;
-        COLS=cols;
+    private static void fillBoardByRandom(int rows, int cols) {
+        ROWS = rows;
+        COLS = cols;
         board = new int[ROWS][COLS];
-
         Random rand = new Random();
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -90,8 +83,7 @@ public class GameOfLife{
         }
     }
 
-    private static void showBoard(){
-
+    private static void showBoard() {
         for (int i = 0; i < ROWS; i++) {
             System.out.print("|");
             for (int j = 0; j < COLS; j++) {
@@ -102,8 +94,7 @@ public class GameOfLife{
         System.out.println();
     }
 
-    private static void doAllIterations(int numOfIterations){
-
+    private static void doAllIterations(int numOfIterations) {
         while (numOfIterations != 0) {
             nextState();
             numOfIterations--;
@@ -111,8 +102,7 @@ public class GameOfLife{
         showBoard();
     }
 
-    private static void nextState(){
-
+    private static void nextState() {
         int[][] temp = new int[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
@@ -125,10 +115,10 @@ public class GameOfLife{
                     } else {
                         temp[i][j] = 0;
                     }
-                }else{
+                } else {
                     if (countAliveNeighbors == 3) {
                         temp[i][j] = 1;
-                    }else {
+                    } else {
                         temp[i][j] = 0;
                     }
                 }
@@ -137,16 +127,15 @@ public class GameOfLife{
         board = temp;
     }
 
-    private static int getAliveNeighbors(int row, int column){
-
+    private static int getAliveNeighbors(int row, int column) {
         int count = 0;
-        for(int i=row-1; i<=row+1; i++){
-            for(int j=column-1; j<=column+1; j++){
+        for (int i = row - 1; i <= row + 1; i++) {
+            for (int j = column - 1; j <= column + 1; j++) {
 
-                if((i==row & j==column) || i>=ROWS || j>=COLS || i<0 || j<0){
+                if ((i == row & j == column) || i >= ROWS || j >= COLS || i < 0 || j < 0) {
                     continue;
-                }else if(board[i][j]==1){
-                    count=count+1;
+                } else if (board[i][j] == 1) {
+                    count = count + 1;
                 }
             }
         }

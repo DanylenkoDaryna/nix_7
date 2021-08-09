@@ -19,20 +19,15 @@ public class Main {
     private static final String EX_5_DESCRIPTION = "5 - ex 5: to play the Game of Life";
     private static final String STOP_PROGRAM = "enter \'q\' to stop program";
 
-
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in, "UTF-8");
-
         boolean mainCycleBreaker = true;
         while (mainCycleBreaker){
-
             welcoming();
             String inputValue = scanner.nextLine().replaceAll(" ", "");
-
-            if (inputValue.matches("[1-5]")){
-                switch (Integer.parseInt(inputValue)){
-                    case 1:{
+            if (inputValue.matches("[1-5]")) {
+                switch (Integer.parseInt(inputValue)) {
+                    case 1 : {
                         String input = scanner.nextLine().replaceAll(" ", "");
                         FindUniqueSymbols.getUniques(input);
                         break;
@@ -40,7 +35,6 @@ public class Main {
                     case 2:
                         KnightMovements.startMenu(scanner);
                         break;
-
                     case 3:
                         SquareOfTriangle.startMenu(scanner);
                         break;
@@ -54,9 +48,9 @@ public class Main {
                         System.out.println("Incorrect number");
                         break;
                 }
-            } else if (inputValue.equals("q")){
+            } else if (inputValue.equals("q")) {
                 mainCycleBreaker = false;
-            } else{
+            } else {
                 System.out.println("Incorrect input. Try Again");
             }
             System.out.println(BORDER);
@@ -64,8 +58,7 @@ public class Main {
         scanner.close();
     }
 
-    private static void welcoming(){
-
+    private static void welcoming() {
         System.out.println(MAIN_DESCRIPTION + "\n" + EX_1_DESCRIPTION
                 + "\n" + EX_2_DESCRIPTION  +"\n" + EX_3_DESCRIPTION +
                 "\n" + EX_4_DESCRIPTION + "\n" + EX_5_DESCRIPTION + "\n"
