@@ -4,7 +4,7 @@ import ua.com.alevel.data.*;
 
 import java.util.Scanner;
 
-public class ChessGame{
+public class ChessGame {
 
     private static Scanner scanner = getScanner();
     private static final int NUM_OF_CELLS = 8;
@@ -15,20 +15,17 @@ public class ChessGame{
     public static Side enemySide;
     public static Side currentSide = Side.WHITES;
 
-    private ChessGame(){
-
+    private ChessGame() {
         System.out.println("Start new Chess game...");
     }
 
-    private static Scanner getScanner(){
-
-        if(scanner!=null){
+    private static Scanner getScanner() {
+        if(scanner != null) {
             return scanner;
-        }else return new Scanner(System.in, "UTF-8");
+        } else return new Scanner(System.in, "UTF-8");
     }
 
-    public static void launching(){
-
+    public static void launching() {
         boolean mainCycleBreaker = true;
         while (mainCycleBreaker) {
             System.out.println("----- Welcome to chess! -----");
@@ -47,88 +44,72 @@ public class ChessGame{
                     ChessGame.startNewGame(getScanner());
                     break;
                 default:
-
                     System.out.println("Incorrect input. Try Again");
                     break;
             }
         }
     }
 
-    private static void startNewGame(Scanner scanner){
-
+    private static void startNewGame(Scanner scanner) {
         ChessGame chessGame = new ChessGame();
         ChessGame.chooseSide(scanner);
         chessGame.start();
         boolean continueGame = true;
-        while(continueGame){
-
+        while(continueGame) {
             System.out.println("------------------------------------------------");
             System.out.println("Choose one of commands: 'draw' to draw game ");
             System.out.println("Choose one of commands: 'end' to end game ");
             System.out.println("Choose one of commands: press 'Enter' to continue");
             System.out.println("------------------------------------------------");
-
             String command = scanner.nextLine();
-
-            if(command.matches("draw")){
-
+            if (command.matches("draw")) {
                 chessGame.declareDraw();
                 continueGame = false;
                 scanner.close();
 
-            }else if(command.matches("end")){
-
+            } else if (command.matches("end")) {
                 chessGame.finishGame(userSide, enemySide);
                 continueGame = false;
                 scanner.close();
-            }else if(command.matches("")){
-
+            } else if (command.matches("")) {
                 chessGame.chooseFigure(scanner);
-
-            }else{
+            } else {
                 System.out.println("Incorrect input. try again..");
             }
         }
     }
 
-    private static void chooseSide(Scanner scanner){
-
+    private static void chooseSide(Scanner scanner) {
         System.out.println("------------------------------------------------");
         System.out.println("Choose side: BLACKS - input '0'.. ");
         System.out.println("Choose side: WHITES - input '1'.. ");
         System.out.println("------------------------------------------------");
-
         String chosenSide = reformatUserInput(scanner.nextLine());
-
-        if(chosenSide.matches("^0$")){
+        if (chosenSide.matches("^0$")) {
             userSide = Side.BLACKS;
             enemySide = Side.WHITES;
-        }else if(chosenSide.matches("^1$")){
+        } else if (chosenSide.matches("^1$")) {
             userSide = Side.WHITES;
             enemySide = Side.BLACKS;
-        }else{
+        } else {
             System.out.println("wrong input1");
             chooseSide(scanner);
         }
         System.out.println("user choose his side as.. " + userSide);
     }
 
-    private static String reformatUserInput(String input){
-
+    private static String reformatUserInput(String input) {
         return input.trim().replaceAll(" ", "");
     }
 
-    private void start(){
-
+    private void start() {
         System.out.println("New game begins...");
         placeFiguresOnBoard();
     }
 
 
-    private static void placeFiguresOnBoard(){
-
+    private static void placeFiguresOnBoard() {
         System.out.println("placing figures on board...");
-
         board[0][0]= new Rook("h1",enemySide);
         board[0][1]= new Knight("h2",enemySide);
         board[0][2]= new Bishop("h3",enemySide);
@@ -169,24 +150,20 @@ public class ChessGame{
         drawBoard();
     }
 
-    private static void drawBoard(){
-
+    private static void drawBoard() {
         System.out.println("draving board.. ");
         System.out.println();
 
-        for (int row = 0; row < NUM_OF_ROWS; row++)
-        {
+        for (int row = 0; row < NUM_OF_ROWS; row++) {
             System.out.println("");
             System.out.println("  --------------------------------------");
-
-            for (int cell = 0; cell < NUM_OF_CELLS; cell++)
-            {
+            for (int cell = 0; cell < NUM_OF_CELLS; cell++) {
                 if (cell == 0) {
                     System.out.print(Character.toString((char) (97+NUM_OF_CELLS-1-row)) + " ");
                 }
-                if(board[row][cell] != null){
+                if (board[row][cell] != null) {
                     System.out.print("| " + board[row][cell].toString() + " ");
-                }else {
+                } else {
                     System.out.print("| " + "\u2001" + " ");
                 }
             }
@@ -196,76 +173,56 @@ public class ChessGame{
         System.out.println("  --------------------------------------");
         System.out.print("\t 1\t 2 \t  3\t  4\t   5\t6 \t 7\t 8");
         System.out.println("");
-
     }
 
-    private void chooseFigure(Scanner scanner){
-
+    private void chooseFigure(Scanner scanner) {
         System.out.println("Please, choose your figure to move.. ");
         String figurePos = scanner.nextLine();
         reformatUserInput(figurePos);
-
-        if(figurePos.matches("^[a-h][1-8]$")){
-
+        if (figurePos.matches("^[a-h][1-8]$")) {
             int srcRow = getRowFrom(figurePos);
             int srcCol = getColFrom(figurePos);
-
-            if(board[srcRow][srcCol]==null){
+            if (board[srcRow][srcCol]==null) {
                 System.out.println("empty cell");
-
-            } else if (board[srcRow][srcCol].getSide() != this.currentSide){
-
+            } else if (board[srcRow][srcCol].getSide() != this.currentSide) {
                 System.out.println("It's not your turn to move");
                 chooseFigure(scanner);
-
-            }else{
-
+            } else {
                 System.out.println("You choose figure.. " +
                         board[srcRow][srcCol].toString());
             }
             this.chooseDestination(scanner, board[srcRow][srcCol]);
-
-        }else{
-
+        } else {
             System.out.println("!Wrong figure input!");
             chooseFigure(scanner);
         }
     }
 
-    private void chooseDestination(Scanner scanner, Figure figure){
-
+    private void chooseDestination(Scanner scanner, Figure figure) {
         System.out.println("please, choose destination to move.. ");
         String destPos = scanner.nextLine();
         reformatUserInput(destPos);
-        if(destPos.matches("^[a-h][1-8]$")){
-
-            if (checkAbilityToMoveTo(figure.getCurrentPosition(), destPos)){
-
+        if (destPos.matches("^[a-h][1-8]$")) {
+            if (checkAbilityToMoveTo(figure.getCurrentPosition(), destPos)) {
                 this.moveTo(destPos, figure);
-
             } else {
-
                 this.chooseFigure(scanner);
             }
-        }else{
-
+        } else {
             System.out.println("wrong figure input");
             chooseFigure(scanner);
         }
     }
 
-    public static int getRowFrom(String movingPosition){
-
+    public static int getRowFrom(String movingPosition) {
         return 'h' - movingPosition.charAt(0) ;
     }
 
-    public static int getColFrom(String movingPosition){
-
+    public static int getColFrom(String movingPosition) {
         return Character.getNumericValue(movingPosition.charAt(1)) - 1;
     }
 
-    private boolean checkAbilityToMoveTo(String sourcePosition, String movingPosition){
-
+    private boolean checkAbilityToMoveTo(String sourcePosition, String movingPosition) {
         System.out.println("checking ability to move to position " + movingPosition);
 
         int srcRow = getRowFrom(sourcePosition);
@@ -274,35 +231,30 @@ public class ChessGame{
         int destRow = getRowFrom(movingPosition);
         int destCol = getColFrom(movingPosition);
 
-        if(board[destRow][destCol] == null){
-
+        if (board[destRow][destCol] == null) {
             return board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol);
-
         }
 
-        if (board[srcRow][srcCol].getSide() != this.currentSide){
-
+        if (board[srcRow][srcCol].getSide() != this.currentSide) {
             System.out.println("It's not your turn to move");
             return false;
         }
 
-        if (board[srcRow][srcCol].getSide() == board[destRow][destCol].getSide()){
-
+        if (board[srcRow][srcCol].getSide() == board[destRow][destCol].getSide()) {
             System.out.println("Figure cannot beat another figure with the same colour");
             return false;
         }
 
-        if (isEnemyKingInMateDanger(movingPosition)){
+//        ???
+        if (isEnemyKingInMateDanger(movingPosition)) {
 
         }
 
         return board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol);
     }
 
-    private boolean isEnemyKingInCheckDanger(int srcRow, int srcCol, int destRow, int destCol){
-
-       if(board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol)){
-
+    private boolean isEnemyKingInCheckDanger(int srcRow, int srcCol, int destRow, int destCol) {
+       if (board[srcRow][srcCol].isMoveValidByFigureRules(srcRow, srcCol, destRow, destCol)) {
            System.out.println("Enemy King In Danger");
            checkTo(enemySide);
            return true;
@@ -310,18 +262,15 @@ public class ChessGame{
         return false;
     }
 
-    private boolean isEnemyKingInMateDanger(String movingPosition){
-
+    private boolean isEnemyKingInMateDanger(String movingPosition) {
         int destRow = getRowFrom(movingPosition);
         int destCol = getColFrom(movingPosition);
-
-        if(currentSide.equals(Side.WHITES) && board[destRow][destCol].getChessman().equals(Chessman.BLACK_KING)){
+        if (currentSide.equals(Side.WHITES) && board[destRow][destCol].getChessman().equals(Chessman.BLACK_KING)) {
             System.out.println("King of " + Side.BLACKS + " defeated!!!");
             checkTo(Side.BLACKS);
             mateTo(Side.BLACKS);
             return true;
-
-        }else if(currentSide.equals(Side.BLACKS) && board[destRow][destCol].getChessman().equals(Chessman.WHITE_KING)){
+        } else if (currentSide.equals(Side.BLACKS) && board[destRow][destCol].getChessman().equals(Chessman.WHITE_KING)) {
             System.out.println("King of " + Side.WHITES + " defeated!!!");
             checkTo(Side.WHITES);
             mateTo(Side.WHITES);
@@ -330,80 +279,60 @@ public class ChessGame{
         return false;
     }
 
-    private void moveTo(String nextPosition, Figure figure){
-
+    private void moveTo(String nextPosition, Figure figure) {
         System.out.println("moving figure on position.. " + nextPosition);
-
         int srcRow = getRowFrom(figure.getCurrentPosition());
         int srcCol = getColFrom(figure.getCurrentPosition());
-
         int destRow = getRowFrom(nextPosition);
         int destCol = getColFrom(nextPosition);
         figure.setCurrentPosition(nextPosition);
-
         board[destRow][destCol] = board[srcRow][srcCol];
         board[srcRow][srcCol] = null;
         this.changeSide();
         drawBoard();
     }
 
-    private void changeSide(){
-
+    private void changeSide() {
         System.out.println("changing side..");
-        if (currentSide == Side.BLACKS){
-
+        if (currentSide == Side.BLACKS) {
             currentSide = Side.WHITES;
-        } else{
-
+        } else {
             currentSide = Side.BLACKS;
         }
     }
 
-    private static void checkTo(Side looser){
-
+    private static void checkTo(Side looser) {
         System.out.println("check to " + looser);
-
     }
 
-    private static void mateTo(Side looser){
-
+    private static void mateTo(Side looser) {
         finishGame(looser, currentSide);
-
     }
 
-    public static void finishGame(){
-
+    public static void finishGame() {
         declareLooseTo(enemySide);
         declareWinTo(userSide);
-
         System.out.println("End Chess game...\n");
     }
 
-    private static void finishGame(Side loser, Side winner){
-
+    private static void finishGame(Side loser, Side winner) {
         declareLooseTo(loser);
         declareWinTo(winner);
-
         System.out.println("End Chess game...\n");
         launching();
     }
 
-    private static void declareDraw(){
-
+    private static void declareDraw() {
         System.out.println("it`s a draw..");
         System.out.println("End Chess game...\n");
         launching();
     }
 
-    private static void declareWinTo(Side winner){
-
+    private static void declareWinTo(Side winner) {
         System.out.println(winner + " wins!!!");
-
     }
 
-    private static void declareLooseTo(Side loser){
-
+    private static void declareLooseTo(Side loser) {
         System.out.println(loser + " lose!!!");
-
     }
 }

@@ -3,18 +3,16 @@ package ua.com.alevel.data;
 import ua.com.alevel.utils.ChessGame;
 
 
-public class Bishop extends Figure{
+public class Bishop extends Figure {
 
-    public Bishop(String startPosition, Side side){
-
+    public Bishop(String startPosition, Side side) {
         super(startPosition, side);
     }
 
-    Bishop(){ }
+    Bishop() { }
 
     @Override
-    protected void setChessman(){
-
+    protected void setChessman() {
         if(getSide().equals(Side.WHITES)){
 
             this.chessman=Chessman.WHITE_BISHOP;
