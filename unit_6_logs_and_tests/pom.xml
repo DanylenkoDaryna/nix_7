@@ -7,9 +7,10 @@
         <groupId>ua.com.alevel</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
     <artifactId>unit_6_logs_and_tests</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>8</java.version>
@@ -20,10 +21,97 @@
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.2.0</maven.shade.plugin.version>
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+        <maven.junit.version>4.13.2</maven.junit.version>
+        <maven.junit.jupiter.version>5.7.2</maven.junit.jupiter.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <logs.folder>logs</logs.folder>
+        <logs.test.folder>test_logs</logs.test.folder>
+        <logs.life.folder>life_logs</logs.life.folder>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <log.path>${logs.folder}/${logs.test.folder}</log.path>
+                <log.info>${log.path}/info.log</log.info>
+                <log.warn>${log.path}/warn.log</log.warn>
+                <log.error>${log.path}/error.log</log.error>
+            </properties>
+        </profile>
+        <profile>
+            <id>life</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <log.path>${logs.folder}/${logs.life.folder}</log.path>
+                <log.info>${log.path}/info.log</log.info>
+                <log.warn>${log.path}/warn.log</log.warn>
+                <log.error>${log.path}/error.log</log.error>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <dependencies>
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${maven.junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- junit-jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${maven.junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${maven.junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
-        <finalName>module1</finalName>
+        <finalName>unit6</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -43,7 +131,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ua.com.alevel.Main</mainClass>
+                            <mainClass>ua.com.alevel.Main6</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -61,7 +149,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ua.com.alevel.Main</mainClass>
+                                    <mainClass>ua.com.alevel.Main6</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -70,4 +158,6 @@
             </plugin>
         </plugins>
     </build>
+
+
 </project>
