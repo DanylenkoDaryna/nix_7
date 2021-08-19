@@ -7,11 +7,9 @@
         <groupId>ua.com.alevel</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>unit_6_logs_and_tests</artifactId>
+    <artifactId>unit_7_exception</artifactId>
     <packaging>jar</packaging>
-
     <properties>
         <java.version>8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
@@ -94,11 +92,10 @@
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>unit6</finalName>
+        <finalName>unit7</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -129,7 +126,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ua.com.alevel.Main6</mainClass>
+                            <mainClass>ua.com.alevel.Main7</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -146,8 +143,9 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ua.com.alevel.Main6</mainClass>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ua.com.alevel.Main7</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -156,6 +154,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
