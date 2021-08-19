@@ -56,12 +56,12 @@ public class AppController{
         }
     }
 
-    public static void showMainMenu(){
+    private static void showMainMenu(){
         LOGGER_INFO.error("start main menu");
         Menu.show();
     }
 
-    public static void checkMenuInput(){
+    private static void checkMenuInput(){
         showMenuItems();
         boolean cycleBreaker = true;
         while(cycleBreaker){
@@ -70,7 +70,7 @@ public class AppController{
         }
     }
 
-    public static void notifyOfIncorrectInput(){
+    private static void notifyOfIncorrectInput(){
         System.out.println(AppMessages.INCORRECT_INPUT);
     }
 
@@ -86,10 +86,10 @@ public class AppController{
                 AppMessages.FIND_ALL_AUTHORS +
                 AppMessages.UPDATE_AUTHOR +
                 AppMessages.DELETE_AUTHOR +
-                AppMessages.EXIT);
+                AppMessages.ASK_TO_EXIT_BY_0);
     }
 
-    public static boolean chooseOption(String option){
+    private static boolean chooseOption(String option){
         switch(option){
             case "1":
                 createBook();
@@ -138,39 +138,44 @@ public class AppController{
         String publisher = enterPublisher();
         int pages = Integer.parseInt(enterNumOfPages());
         bookFacade.register(title, authors, publisher, pages);
-
     }
 
     private static int enterId(){
-        System.out.println("Please, enter id..");
-        String id = getScanner().nextLine().trim().replaceAll(" ", "");
-        if(id.matches("^[0-9]+$")){
+        System.out.println(AppMessages.ASK_TO_ENTER_ID);
+        String id = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+            return checkId(id);
+    }
+
+    private static int checkId(String id){
+        if(isIdMatchesRules(id)){
             return Integer.parseInt(id);
         }else{
-            System.out.println("Wrong! Need a correct id number");
+            System.out.println(AppMessages.WARN_INCORRECT_ID);
             return enterId();
         }
     }
 
-    private static String enterBookTitle(){
-        System.out.println("Please, enter title");
-        String title = getScanner().nextLine().trim();
-        checkBookTitle(title);
-        return title;
+    public static boolean isIdMatchesRules(String id){
+
+        return id.matches(AppMessages.REGEX_FOR_ID);
     }
 
-    public static void checkBookTitle(String title){
+    private static String enterBookTitle(){
+        System.out.println(AppMessages.ASK_TO_ENTER_TITLE);
+        String title = getScanner().nextLine().trim();
+        return checkBookTitle(title);
+    }
 
+    private static String checkBookTitle(String  title){
         if(checkTitleNotNums(title)){
-            return;
+            return title;
         }else{
-            System.out.println("Title should not consist of numbers only!");
-            enterBookTitle();
+            System.out.println(AppMessages.WARN_INCORRECT_TITLE);
+            return enterBookTitle();
         }
     }
 
     public static boolean checkTitleNotNums(String title){
-
         if(titleMatchesRules(title)){
             return true;
         }
@@ -178,20 +183,19 @@ public class AppController{
     }
 
     private static boolean titleMatchesRules(String title){
-
-        return !title.matches("^[0-9]+$");
+        return !title.matches(AppMessages.REGEX_IT_IS_NOT_A_TITLE);
     }
 
     private static MyArrayListImpl<Author> enterAuthors(){
         MyArrayListImpl<Author> authors = new MyArrayListImpl<>();
-        System.out.println("Please, enter authors like 'author1' or 'q' ");
+        System.out.println(AppMessages.ASK_TO_ENTER_AUTHOR);
         boolean cyclebreaker = true;
         while(cyclebreaker){
             Author author = makeAuthor();
             authors.add(author);
-            System.out.println("Enter 'q' when you added al the authors or 'c' to continue!");
+            System.out.println(AppMessages.ASK_TO_ENTER_ANOTHER_AUTHOR_OR_QUIT);
             String input = getScanner().nextLine().trim();
-            if(input.equals("q")){
+            if(input.equals(AppMessages.EXIT_BY_Q)){
                 cyclebreaker = false;
             }
         }
@@ -199,16 +203,16 @@ public class AppController{
     }
 
     private static String enterPublisher(){
-        System.out.println("Please, enter Publisher");
+        System.out.println(AppMessages.ASK_TO_ENTER_PUBLISHER);
         String publisher = getScanner().nextLine().trim();
         return checkPublisher(publisher);
     }
 
-    public static String checkPublisher(String publisher){
+    private static String checkPublisher(String publisher){
         if(checkPublisherNotNums(publisher)){
             return publisher;
         }else{
-            System.out.println("publisher should not consist of numbers only!");
+            System.out.println(AppMessages.WARN_INCORRECT_PUBLISHER);
              return enterPublisher();
         }
     }
@@ -221,13 +225,12 @@ public class AppController{
     }
 
     private static boolean publisherMatchesRules(String publisher){
-
-        return !publisher.matches("^[0-9]+$");
+        return !publisher.matches(AppMessages.REGEX_IT_IS_NOT_A_PUBLISHER);
     }
 
     private static String enterNumOfPages(){
-        System.out.println("Please, enter Number Of Pages");
-        String pages = getScanner().nextLine().trim().replaceAll(" ", "");
+        System.out.println(AppMessages.ASK_TO_ENTER_PAGES);
+        String pages = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
         return checkNumOfPages(pages);
     }
 
@@ -235,13 +238,13 @@ public class AppController{
         if(pagesMatchTheRules(pages)){
             return pages;
         }else{
-            System.out.println("Wrong! Need a correct number");
+            System.out.println(AppMessages.WARN_INCORRECT_PAGES);
             return enterNumOfPages();
         }
     }
 
     public static boolean pagesMatchTheRules(String pages){
-        if(!pages.matches("^[1-9][0-9]+$")){
+        if(!pages.matches(AppMessages.REGEX_FOR_PAGES)){
             return false;
         }else if(pages.length() > AppMessages.MAX_NUM_OF_PAGES){
             return false;
@@ -292,27 +295,27 @@ public class AppController{
         String lastName = enterLastName();
         checkFullName(firstName, lastName);
         StringBuilder fullName = new StringBuilder();
-        fullName.append(firstName).append(" ").append(lastName);
+        fullName.append(firstName).append(AppMessages.SPACE).append(lastName);
         return new Author(fullName.toString());
     }
 
     private static String enterFirstName(){
-        System.out.println("Please, enter firs name..");
-        String firstName = getScanner().nextLine().trim().replaceAll(" ", "");
+        System.out.println(AppMessages.ASK_TO_ENTER_FIRST_NAME);
+        String firstName = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
         return checkFirstName(firstName);
     }
 
     private static String enterLastName(){
-        System.out.println("Please, enter last name..");
-        String lastName = getScanner().nextLine().trim().replaceAll(" ", "");
+        System.out.println(AppMessages.ASK_TO_ENTER_LAST_NAME);
+        String lastName = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
         return checkLastName(lastName);
     }
 
-    public static void checkFullName(String name, String lastName){
+    private static void checkFullName(String name, String lastName){
         if(isFullNameFollowRules(name, lastName)){
             return;
         }else{
-            System.out.println("Last name can not be like first name!");
+            System.out.println(AppMessages.WARN_INCORRECT_FIRST_LAST_NAME);
             makeAuthor();
         }
     }
@@ -321,41 +324,43 @@ public class AppController{
         return !name.equals(lastName);
     }
 
-    public static String checkFirstName(String name){
+    private static String checkFirstName(String name){
         if(isNameFollowRules(name)){
             return name;
         }else{
-            System.out.println("Print name correctly!");
+            System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME);
             return enterFirstName();
         }
     }
 
-    public static String checkLastName(String lastName){
+    private static String checkLastName(String lastName){
         if(isLastNameFollowRules(lastName)){
             return lastName;
         }else{
-            System.out.println("Print last Name correctly!");
+            System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME);
             return enterLastName();
         }
     }
 
     public static boolean isNameFollowRules(String name){
-        if(!name.matches("^[A-Z][a-z]+$")){
-            System.out.println("Print in format 'Anton'!");
+        if(!name.matches(AppMessages.REGEX_FOR_NAME)){
+            System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME);
             return false;
-        }else if(name.length() > AppMessages.MAX_SIZE_OF_NAME){
-            System.out.println("Out of allowed size for name!");
+        }else if(name.length() > AppMessages.MAX_SIZE_OF_NAME ||
+                name.length() < AppMessages.MIN_SIZE_OF_NAME){
+            System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME_SIZE);
             return false;
         }
         return true;
     }
 
     public static boolean isLastNameFollowRules(String name){
-        if(!name.matches("^[A-Z][a-z]+$")){
-            System.out.println("Print in format 'Sentsov'!");
+        if(!name.matches(AppMessages.REGEX_FOR_NAME)){
+            System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME);
             return false;
-        }else if(name.length() > AppMessages.MAX_SIZE_OF_LAST_NAME){
-            System.out.println("Out of allowed size for last name!");
+        }else if(name.length() > AppMessages.MAX_SIZE_OF_LAST_NAME ||
+                name.length() < AppMessages.MIN_SIZE_OF_NAME){
+            System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME_SIZE);
             return false;
         }
         return true;
@@ -393,5 +398,4 @@ public class AppController{
             LOGGER_ERR.error(ne.getMessage());
         }
     }
-
 }

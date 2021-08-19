@@ -19,3 +19,7 @@ cd ..
 cd module1
 call module1.bat
 cd ..
+
+cd logs_and_tests
+call unit_6_start.bat
+cd ..

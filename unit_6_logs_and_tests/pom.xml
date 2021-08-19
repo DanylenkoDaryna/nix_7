@@ -22,7 +22,8 @@
         <maven.shade.plugin.version>3.2.0</maven.shade.plugin.version>
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
         <maven.junit.version>4.13.2</maven.junit.version>
-        <maven.junit.jupiter.version>5.7.2</maven.junit.jupiter.version>
+        <maven.junit.jupiter.version>5.7.0</maven.junit.jupiter.version>
+        <maven.junit.vintage.version>5.7.0</maven.junit.vintage.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <logs.folder>logs</logs.folder>
@@ -57,12 +58,12 @@
 
     <dependencies>
         <!-- junit -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${maven.junit.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>junit</groupId>-->
+            <!--<artifactId>junit</artifactId>-->
+            <!--<version>${maven.junit.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
         <!-- junit-jupiter -->
         <dependency>
@@ -82,7 +83,7 @@
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.7.0</version>
+            <version>${maven.junit.vintage.version}</version>
         </dependency>
 
         <dependency>
@@ -122,6 +123,11 @@
                     <target>${maven.compiler.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

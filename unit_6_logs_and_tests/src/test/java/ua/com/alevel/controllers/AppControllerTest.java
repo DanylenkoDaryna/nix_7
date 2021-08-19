@@ -1,42 +1,27 @@
-package ua.com.alevel;
+package ua.com.alevel.controllers;
 
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
-import ua.com.alevel.controllers.AppController;
-import ua.com.alevel.db.MyArrayListImpl;
-import ua.com.alevel.entity.Author;
-import ua.com.alevel.entity.Book;
-import ua.com.alevel.service.AuthorService;
-import ua.com.alevel.service.AuthorServiceImpl;
-import ua.com.alevel.service.BookService;
-import ua.com.alevel.service.BookServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Main6Test{
 
-    private static MyArrayListImpl<Book> bookShelf;
-    private static MyArrayListImpl<Author> authorCatalogue;
-    private static BookService bookService;
-    private static AuthorService authorService;
+public class AppControllerTest{
 
-    @BeforeAll
-    public void startApp(){
-       bookShelf = new MyArrayListImpl<>();
-       authorCatalogue = new MyArrayListImpl<>();
-       bookService = new BookServiceImpl();
-       AuthorService authorService = new AuthorServiceImpl();
-    }
+    private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
 
     @Test
     @Order(1)
     public void checkScannerNotNull(){
+        LOGGER_INFO.info("test 1");
         assert (AppController.takeScanner() != null);
     }
 
     @Test
     @Order(2)
     public void checkBookTitleIsCorrect(){
-        boolean result = AppController.checkTitleNotNums("derril sdf");
+        LOGGER_INFO.info("test 2");
+        boolean result = AppController.checkTitleNotNums("test sdf");
         assert (result==true);
     }
 
@@ -187,4 +172,17 @@ public class Main6Test{
         assert (result==false);
     }
 
+    @Test
+    @Order(22)
+    public void checkIdIsCorrect(){
+        boolean result = AppController.isIdMatchesRules("35");
+        assert (result==true);
+    }
+
+    @Test
+    @Order(23)
+    public void checkIdIsIncorrect(){
+        boolean result = AppController.isIdMatchesRules("id");
+        assert (result==false);
+    }
 }

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-public class MyArrayListImpl<T> implements Array{
+public class MyArrayListImpl<T extends Object> implements Array{
 
     private T[] array;
     private static final int INITIAL_CAPACITY = 10;
@@ -93,6 +93,7 @@ public class MyArrayListImpl<T> implements Array{
             }
             int lastIndexToDelete = size - 1;
             getArray()[lastIndexToDelete] = null;
+            setSize(getSize()-1);
         }
     }
 

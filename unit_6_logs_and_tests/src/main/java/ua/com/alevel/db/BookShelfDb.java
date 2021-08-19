@@ -30,7 +30,7 @@ public class BookShelfDb{
             checkAndAddAuthor((Author) tempAuthors.get(i));
         }
         bookShelf.add(book);
-        System.out.println(bookShelf.toString());
+        //System.out.println(bookShelf.toString());
     }
 
     public Book readBook(int idToFind){
@@ -40,6 +40,7 @@ public class BookShelfDb{
                 return tempBook;
             }
         }
+        System.out.println("No such book");
         return null;
     }
 
@@ -145,5 +146,13 @@ public class BookShelfDb{
             }
         }
         return id;
+    }
+
+    public MyArrayListImpl<Book> getBookShelf(){
+        return bookShelf;
+    }
+
+    public MyArrayListImpl<Author> getAuthorCatalogue(){
+        return authorCatalogue;
     }
 }
