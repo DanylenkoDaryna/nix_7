@@ -9,27 +9,27 @@ import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Book;
 
 
- class BookServiceImplTest{
+class BookServiceImplTest{
 
     private static BookShelfDb bookShelfDB = BookShelfDb.getInstance();
     private static MyArrayListImpl<Book> bookShelf = new MyArrayListImpl<>();
     private static final int BOOKSHELF_SIZE = 10;
-    private static BookService bookService= new BookServiceImpl();
+    private static BookService bookService = new BookServiceImpl();
     private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
 
 
     @BeforeAll
-     static void makeBooks(){
+    static void makeBooks(){
         System.out.println("Before");
-        for (int i = 0; i < BOOKSHELF_SIZE; i++) {
+        for(int i = 0; i < BOOKSHELF_SIZE; i++){
             Book book = GenerateForTestsUtil.generateBook(i);
             bookShelf.add(book);
-            bookService.create((Book)bookShelf.get(i));
+            bookService.create((Book) bookShelf.get(i));
         }
-   }
+    }
 
     @AfterAll
-     static void tearDown(){
+    static void tearDown(){
         System.out.println("After");
         bookShelf.clear();
         bookShelfDB.getBookShelf().clear();
@@ -37,45 +37,45 @@ import ua.com.alevel.entity.Book;
 
     @Test
     @Order(1)
-     void checkAllBooks(){
+    void checkAllBooks(){
         LOGGER_INFO.info("test 1");
         System.out.println("test 1");
         bookShelf = bookService.findAll();
-        Book bookFromTestBookshelf = (Book)bookShelf.get(1);
-        Book bookFromDb = (Book)bookShelfDB.getBookShelf().get(1);
-        assert(bookFromTestBookshelf.getId() == bookFromDb.getId());
+        Book bookFromTestBookshelf = (Book) bookShelf.get(1);
+        Book bookFromDb = (Book) bookShelfDB.getBookShelf().get(1);
+        assert (bookFromTestBookshelf.getId() == bookFromDb.getId());
     }
 
     @Test
     @Order(2)
-     void checkBookRead(){
+    void checkBookRead(){
         System.out.println("test 2");
         int id = ((Book) bookService.findAll().get(0)).getId();
         Book book = bookService.read(id);
-        assert(book.getTitle().equals("Poems. Part 0"));
+        assert (book.getTitle().equals("Poems. Part 0"));
     }
 
     @Test
     @Order(3)
-     void checkBookUpdate(){
+    void checkBookUpdate(){
         System.out.println("test 3");
         Book book = (Book) bookService.findAll().get(5);
         int id = book.getId();
         book.setPages(200);
         bookService.update(book);
         Book updatedBook = bookService.read(id);
-        assert(updatedBook.getPages() == 200);
+        assert (updatedBook.getPages() == 200);
     }
 
     @Test
     @Order(4)
-     void checkBookDelete(){
+    void checkBookDelete(){
         System.out.println("test 4");
 
         Book book = (Book) bookService.findAll().get(6);
         int id = book.getId();
         bookService.delete(id);
         MyArrayListImpl<Book> books = bookService.findAll();
-        assert(books.size()==9);
+        assert (books.size() == 9);
     }
 }

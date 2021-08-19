@@ -9,7 +9,7 @@ public class GenerateForTestsUtil{
     public static Book generateBook(int index){
 
         Book book = new Book();
-        book.setTitle("Poems. Part "+index);
+        book.setTitle("Poems. Part " + index);
         MyArrayListImpl<Author> authors = new MyArrayListImpl<>();
         authors.add(generateAuthor(index));
         book.setAuthors(authors);

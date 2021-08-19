@@ -30,7 +30,6 @@ public class BookShelfDb{
             checkAndAddAuthor((Author) tempAuthors.get(i));
         }
         bookShelf.add(book);
-        //System.out.println(bookShelf.toString());
     }
 
     public Book readBook(int idToFind){
@@ -73,7 +72,6 @@ public class BookShelfDb{
         }else{
             author.setId(generateAuthorId());
             authorCatalogue.add(author);
-            System.out.println(authorCatalogue.toString());
         }
     }
 
