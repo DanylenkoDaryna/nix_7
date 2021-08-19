@@ -1,6 +1,6 @@
 package ua.com.alevel.utils;
 
-import ua.com.alevel.data.*;
+import ua.com.alevel.entity.*;
 
 import java.util.Scanner;
 
@@ -70,7 +70,6 @@ public class ChessGame {
             } else if (command.matches("end")) {
                 chessGame.finishGame(userSide, enemySide);
                 continueGame = false;
-                scanner.close();
             } else if (command.matches("")) {
                 chessGame.chooseFigure(scanner);
             } else {

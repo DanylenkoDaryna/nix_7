@@ -6,15 +6,15 @@ public class JarTesting {
 
     private static final String BORDER = "===========================================================\n";
 
-    private static final String MAIN_DESCRIPTION = "Choose an exercise to test by inputting one of this symbols:";
-    private static final String EX_1_DESCRIPTION = "1 - ex 1: get reversed string";
-    private static final String EX_2_DESCRIPTION = "2 - ex 2: get string with reversed substring";
-    private static final String EX_3_DESCRIPTION = "3 - ex 3: get string with reversed substring between indexes";
+    private static final String MAIN_DESCRIPTION = "Choose an exercise to test by inputting one of this symbols:\n";
+    private static final String EX_1_DESCRIPTION = "1 - ex 1: get reversed string\n";
+    private static final String EX_2_DESCRIPTION = "2 - ex 2: get string with reversed substring\n";
+    private static final String EX_3_DESCRIPTION = "3 - ex 3: get string with reversed substring between indexe\ns";
 
     private static final String EX_1_INSTRUCTIONS = "Please, input string to reverse. As example: 'hello world' \n";
     private static final String EX_2_INSTRUCTIONS = "Please, input string and substring to reverse. As example: " +
             "'hello world, worl' \n";
-    private static final String EX_3_INSTRUCTIONS = "Please, input string and two indexes to reverse substring" +
+    private static final String EX_3_INSTRUCTIONS = "Please, input string and two indexes to reverse substring\n" +
             " between them. As example: ' hello world, 3, 7' \n";
 
     private static final String STOP_PROGRAM = "enter \'q\' to stop program";

@@ -2,5 +2,5 @@
 
 call mvn clean
 call mvn package
-call java -jar target\unit6.jar
+call java -jar target\unit7.jar
 call mvn clean
