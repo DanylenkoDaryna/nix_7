@@ -2,19 +2,37 @@ package ua.com.alevel.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ua.com.alevel.entity.CalendarDate;
+import ua.com.alevel.entity.Month;
+import ua.com.alevel.exceptions.CalendarFalseDateException;
+import ua.com.alevel.exceptions.CalendarFalseFormatException;
 import ua.com.alevel.cmd.AppMessages;
 import ua.com.alevel.cmd.Menu;
+import ua.com.alevel.exceptions.CalendarUnknownFormatException;
+import ua.com.alevel.exceptions.DateInsaneException;
+import ua.com.alevel.factory.FormatterMakerUtil;
+import ua.com.alevel.util.CheckerDateFormatUtil;
+import ua.com.alevel.util.ConverterToMsUtill;
+import ua.com.alevel.util.DateFormatterUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CalendarController{
 
-    private static Scanner scanner;
-    //    private static final BookService bookService = new BookServiceImpl();
-//    private static final AuthorService authorService = new AuthorServiceImpl();
-//    private static final BookFacade bookFacade = new BookFacade();
-    private static final Logger LOGGER_INFO = LoggerFactory.getLogger("info");
     private static final Logger LOGGER_ERR = LoggerFactory.getLogger("error");
+    private static Scanner scanner;
+
+    private static List<String> formats;
+
+    static{
+        formats = new ArrayList<>();
+        formats.add("dd/mm/yy");
+        formats.add("m/d/yyyy");
+        formats.add("mmm-d-yy");
+        formats.add("dd-mmm-yyyy 00:00");
+    }
 
     private static Scanner getScanner(){
         if(scanner == null){
@@ -24,346 +42,235 @@ public class CalendarController{
             return scanner;
     }
 
-    public static Scanner takeScanner(){
+    private static Scanner takeScanner(){
         return getScanner();
     }
 
     public static void startApp(){
-        Scanner scanner = CalendarController.takeScanner();
-        boolean menuCycleBreaker = true;
-        while(menuCycleBreaker){
-            CalendarController.showMainMenu();
-            String inputValue = scanner.nextLine().trim();
-            switch(inputValue){
-                case "s":
-                    CalendarController.checkMenuInput();
-                    break;
-                case "q":
-                    menuCycleBreaker = false;
-                    break;
-                default:
-                    CalendarController.notifyOfIncorrectInput();
-                    break;
-            }
-        }
+        MenuController.startAppMenu();
     }
 
-    private static void showMainMenu(){
-        LOGGER_INFO.error("start main menu");
-        Menu.show();
-    }
-
-    private static void checkMenuInput(){
-        showMenuItems();
+    public static CalendarDate inputDate(){
         boolean cycleBreaker = true;
         while(cycleBreaker){
-            String inputValue = takeScanner().nextLine().replaceAll(" ", "");
-            cycleBreaker = chooseOption(inputValue);
-        }
-    }
-
-    private static void notifyOfIncorrectInput(){
-        System.out.println(AppMessages.INCORRECT_INPUT);
-    }
-
-    private static void showMenuItems(){
-        System.out.println(AppMessages.HORIZONTAL_BORDER +
-                AppMessages.CREATE_NEW_BOOK +
-                AppMessages.FIND_BOOK +
-                AppMessages.FIND_ALL_BOOKS +
-                AppMessages.UPDATE_BOOK +
-                AppMessages.DELETE_BOOK +
-                AppMessages.CREATE_NEW_AUTHOR +
-                AppMessages.FIND_AUTHOR +
-                AppMessages.FIND_ALL_AUTHORS +
-                AppMessages.UPDATE_AUTHOR +
-                AppMessages.DELETE_AUTHOR +
-                AppMessages.ASK_TO_EXIT_BY_0);
-    }
-
-    private static boolean chooseOption(String option){
-        switch(option){
-            case "1":
-                //createBook();
-                break;
-            case "2":
-                //findBook();
-                break;
-            case "0":
-                return false;
-            default:{
-                System.out.println(AppMessages.INCORRECT_INPUT);
-                showMenuItems();
-                return true;
+            Menu.showInputDateMenu();
+            String input = getUsersPreEditedCommand();
+            switch(input){
+                case "0":
+                    cycleBreaker = false;
+                    break;
+                case "1":
+                    try{
+                        String format = chooseFormat();
+                        return getDateFromInput(format);
+                    }catch(DateInsaneException e){
+                        LOGGER_ERR.error(e.getMessage());
+                        System.out.println(e.getMessage());
+                        return inputDate();
+                    }catch(CalendarUnknownFormatException e){
+                        System.out.println(e.getMessage());
+                        return inputDate();
+                    }catch(CalendarFalseFormatException fe){
+                        System.out.println(fe.getMessage());
+                        LOGGER_ERR.error(fe.getMessage());
+                        return inputDate();
+                    }
+                case "2":
+                    try{
+                        return getDateFromInput();
+                    }catch(CalendarFalseDateException de){
+                        System.out.println(de.getMessage());
+                        LOGGER_ERR.error(de.getMessage());
+                        return inputDate();
+                    }
+                default:
+                    System.out.println(AppMessages.WARN_INCORRECT_INPUT);
             }
         }
-        return false;
+        return new CalendarDate();
     }
 
-//    private static void createBook(){
-//        String title = enterBookTitle();
-//        MyArrayListImpl<Author> authors = enterAuthors();
-//        String publisher = enterPublisher();
-//        int pages = Integer.parseInt(enterNumOfPages());
-//        bookFacade.register(title, authors, publisher, pages);
-//    }
-//
-//    private static int enterId(){
-//        System.out.println(AppMessages.ASK_TO_ENTER_ID);
-//        String id = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
-//            return checkId(id);
-//    }
-//
-//    private static int checkId(String id){
-//        if(isIdMatchesRules(id)){
-//            return Integer.parseInt(id);
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_ID);
-//            return enterId();
-//        }
-//    }
-//
-//    public static boolean isIdMatchesRules(String id){
-//
-//        return id.matches(AppMessages.REGEX_FOR_ID);
-//    }
-//
-//    private static String enterBookTitle(){
-//        System.out.println(AppMessages.ASK_TO_ENTER_TITLE);
-//        String title = getScanner().nextLine().trim();
-//        return checkBookTitle(title);
-//    }
-//
-//    private static String checkBookTitle(String  title){
-//        if(checkTitleNotNums(title)){
-//            return title;
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_TITLE);
-//            return enterBookTitle();
-//        }
-//    }
-//
-//    public static boolean checkTitleNotNums(String title){
-//        if(titleMatchesRules(title)){
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private static boolean titleMatchesRules(String title){
-//        return !title.matches(AppMessages.REGEX_IT_IS_NOT_A_TITLE);
-//    }
-//
-//    private static MyArrayListImpl<Author> enterAuthors(){
-//        MyArrayListImpl<Author> authors = new MyArrayListImpl<>();
-//        System.out.println(AppMessages.ASK_TO_ENTER_AUTHOR);
-//        boolean cyclebreaker = true;
-//        while(cyclebreaker){
-//            Author author = makeAuthor();
-//            authors.add(author);
-//            System.out.println(AppMessages.ASK_TO_ENTER_ANOTHER_AUTHOR_OR_QUIT);
-//            String input = getScanner().nextLine().trim();
-//            if(input.equals(AppMessages.EXIT_BY_Q)){
-//                cyclebreaker = false;
-//            }
-//        }
-//        return authors;
-//    }
-//
-//    private static String enterPublisher(){
-//        System.out.println(AppMessages.ASK_TO_ENTER_PUBLISHER);
-//        String publisher = getScanner().nextLine().trim();
-//        return checkPublisher(publisher);
-//    }
-//
-//    private static String checkPublisher(String publisher){
-//        if(checkPublisherNotNums(publisher)){
-//            return publisher;
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_PUBLISHER);
-//             return enterPublisher();
-//        }
-//    }
-//
-//    public static boolean checkPublisherNotNums(String publisher){
-//        if(publisherMatchesRules(publisher)){
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private static boolean publisherMatchesRules(String publisher){
-//        return !publisher.matches(AppMessages.REGEX_IT_IS_NOT_A_PUBLISHER);
-//    }
-//
-//    private static String enterNumOfPages(){
-//        System.out.println(AppMessages.ASK_TO_ENTER_PAGES);
-//        String pages = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
-//        return checkNumOfPages(pages);
-//    }
-//
-//    public static String checkNumOfPages(String pages){
-//        if(pagesMatchTheRules(pages)){
-//            return pages;
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_PAGES);
-//            return enterNumOfPages();
-//        }
-//    }
-//
-//    public static boolean pagesMatchTheRules(String pages){
-//        if(!pages.matches(AppMessages.REGEX_FOR_PAGES)){
-//            return false;
-//        }else if(pages.length() > AppMessages.MAX_NUM_OF_PAGES){
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    private static void findBook(){
-//        int id = enterId();
-//        try{
-//            Book book = bookService.read(id);
-//            System.out.println(book);
-//        }catch(NullPointerException ne){
-//            LOGGER_ERR.error(ne.getMessage());
-//        }
-//    }
-//
-//    private static void FindAllBooks(){
-//        MyArrayListImpl<Book> allBooks = bookService.findAll();
-//        System.out.println(allBooks.toString());
-//    }
-//
-//    private static void updateBook(){
-//        int id = enterId();
-//        String title = enterBookTitle();
-//        String publisher = enterPublisher();
-//        int pages = Integer.parseInt(enterNumOfPages());
-//        bookFacade.update(id, title, publisher, pages);
-//    }
-//
-//    private static void deleteBook(){
-//        int id = enterId();
-//        try{
-//            bookService.delete(id);
-//            System.out.println(bookService.findAll());
-//        }catch(NullPointerException ne){
-//            LOGGER_ERR.error(ne.getMessage());
-//        }
-//    }
-//
-//    private static void createAuthor(){
-//        Author author = makeAuthor();
-//        authorService.create(author);
-//    }
-//
-//    private static Author makeAuthor(){
-//        String firstName = enterFirstName();
-//        String lastName = enterLastName();
-//        checkFullName(firstName, lastName);
-//        StringBuilder fullName = new StringBuilder();
-//        fullName.append(firstName).append(AppMessages.SPACE).append(lastName);
-//        return new Author(fullName.toString());
-//    }
-//
-//    private static String enterFirstName(){
-//        System.out.println(AppMessages.ASK_TO_ENTER_FIRST_NAME);
-//        String firstName = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
-//        return checkFirstName(firstName);
-//    }
-//
-//    private static String enterLastName(){
-//        System.out.println(AppMessages.ASK_TO_ENTER_LAST_NAME);
-//        String lastName = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
-//        return checkLastName(lastName);
-//    }
-//
-//    private static void checkFullName(String name, String lastName){
-//        if(isFullNameFollowRules(name, lastName)){
-//            return;
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_FIRST_LAST_NAME);
-//            makeAuthor();
-//        }
-//    }
-//
-//    public static boolean isFullNameFollowRules(String name, String lastName){
-//        return !name.equals(lastName);
-//    }
-//
-//    private static String checkFirstName(String name){
-//        if(isNameFollowRules(name)){
-//            return name;
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME);
-//            return enterFirstName();
-//        }
-//    }
-//
-//    private static String checkLastName(String lastName){
-//        if(isLastNameFollowRules(lastName)){
-//            return lastName;
-//        }else{
-//            System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME);
-//            return enterLastName();
-//        }
-//    }
-//
-//    public static boolean isNameFollowRules(String name){
-//        if(!name.matches(AppMessages.REGEX_FOR_NAME)){
-//            System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME);
-//            return false;
-//        }else if(name.length() > AppMessages.MAX_SIZE_OF_NAME ||
-//                name.length() < AppMessages.MIN_SIZE_OF_NAME){
-//            System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME_SIZE);
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    public static boolean isLastNameFollowRules(String name){
-//        if(!name.matches(AppMessages.REGEX_FOR_NAME)){
-//            System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME);
-//            return false;
-//        }else if(name.length() > AppMessages.MAX_SIZE_OF_LAST_NAME ||
-//                name.length() < AppMessages.MIN_SIZE_OF_NAME){
-//            System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME_SIZE);
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    private static void findAuthor(){
-//        int id = enterId();
-//        try{
-//            Author author = authorService.read(id);
-//            System.out.println(author);
-//        }catch(NullPointerException ne){
-//            LOGGER_ERR.error(ne.getMessage());
-//            showMainMenu();
-//        }
-//    }
-//
-//    private static void FindAllAuthors(){
-//        MyArrayListImpl<Author> allAuthors = authorService.findAll();
-//        System.out.println(allAuthors.toString());
-//    }
-//
-//    private static void updateAuthor(){
-//        int id = enterId();
-//        Author author = makeAuthor();
-//        author.setId(id);
-//        authorService.update(author);
-//    }
-//
-//    private static void deleteAuthor(){
-//        int id = enterId();
-//        try{
-//            authorService.delete(id);
-//            System.out.println(authorService.findAll());
-//        }catch(NullPointerException ne){
-//            LOGGER_ERR.error(ne.getMessage());
-//        }
-//    }
+    public static String getUsersPreEditedCommand(){
+        return takeScanner().nextLine().trim().toLowerCase().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+    }
+
+    public static String getUsersPreEditedInput(){
+        return takeScanner().nextLine().trim();
+    }
+
+    private static String chooseFormat() throws CalendarFalseFormatException{
+        System.out.println(AppMessages.ENTER_FORMAT + AppMessages.ENTER_FORMAT_EXAMPLE);
+        String usersFormat = getUsersPreEditedInput();
+        if(CheckerDateFormatUtil.checkFormatCorrect(usersFormat)){
+            return usersFormat;
+        }else{
+            throw new CalendarFalseFormatException();
+        }
+    }
+
+    private static CalendarDate getDateFromInput() throws CalendarFalseDateException{
+        System.out.println(AppMessages.ENTER_DATE + AppMessages.ENTER_DATE_EXAMPLE);
+        String usersDate = getUsersPreEditedInput();
+        if(CheckerDateFormatUtil.checkDateCorrect(usersDate)){
+            return convertToDate(usersDate);
+        }else{
+            throw new CalendarFalseDateException();
+        }
+    }
+
+    private static CalendarDate getDateFromInput(String format) throws CalendarUnknownFormatException, DateInsaneException{
+        System.out.println(AppMessages.ENTER_DATE + AppMessages.ENTER_DATE_EXAMPLE);
+        String usersDate = getUsersPreEditedInput();
+        return convertToDate(usersDate, format);
+
+    }
+
+    public static CalendarDate convertToDate(String usersDate){
+        CalendarDate calendarDate = new CalendarDate();
+        if(usersDate.contains(AppMessages.SPACE)){
+            String date = usersDate.split(AppMessages.SPACE)[0];
+            String time = usersDate.split(AppMessages.SPACE)[1];
+            setDatePart(calendarDate, date);
+            setTimePart(calendarDate, time);
+        }else{
+            setDatePart(calendarDate, usersDate);
+        }
+        setDateAverageMills(calendarDate);
+
+        return calendarDate;
+    }
+
+    private static void setDateAverageMills(CalendarDate calendarDate){
+        calendarDate.setAverageMills(
+                ConverterToMsUtill.countAverageMills(calendarDate));
+    }
+
+    private static void setDatePart(CalendarDate calendarDate, String date){
+        String[] parts = date.split(AppMessages.SLASH + AppMessages.OR + AppMessages.DEFIS);
+        if(parts[0].equals(date)){
+            getOnlyYearFromString(calendarDate, date);
+        }else{
+            int day = getDayFromString(parts);
+            Month month = getMonthFromString(parts);
+            int year = getYearFromString(parts);
+            calendarDate.setDay(day);
+            calendarDate.setMonth(month);
+            calendarDate.setYear(year);
+        }
+    }
+
+    private static void getOnlyYearFromString(CalendarDate calendarDate, String year){
+        calendarDate.setDay(1);
+        calendarDate.setMonth(Month.values()[0]);
+        calendarDate.setYear(Integer.parseInt(year));
+    }
+
+    private static int getYearFromString(String[] parts){
+        try{
+            if(parts[2].isEmpty()){
+                return 0;
+            }else return Integer.parseInt(parts[2]);
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return 0;
+        }
+    }
+
+    private static Month getMonthFromString(String[] parts){
+        try{
+            String month = parts[1];
+            if(month.isEmpty()){
+                return Month.values()[0];
+            }else return Month.values()[Integer.parseInt(month) - AppMessages.ZERO_MONTH];
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return Month.values()[0];
+        }
+    }
+
+    private static int getDayFromString(String[] parts){
+        try{
+            String day = parts[0];
+            if(day.isEmpty()){
+                return 1;
+            }else return Integer.parseInt(day);
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return 1;
+        }
+    }
+
+    private static void setTimePart(CalendarDate calendarDate, String time){
+        String[] parts = time.split(AppMessages.DOUBLE_DOT);
+        if(parts == null){
+            calendarDate.setHours(0);
+            calendarDate.setMinutes(0);
+            calendarDate.setSeconds(0);
+            calendarDate.setMilliseconds(0);
+        }else{
+            int hours = getHoursFromString(parts);
+            int mins = getMinutesFromString(parts);
+            int sec = getSecFromString(parts);
+            int mills = getMillsFromString(parts);
+            calendarDate.setHours(hours);
+            calendarDate.setMinutes(mins);
+            calendarDate.setSeconds(sec);
+            calendarDate.setMilliseconds(mills);
+        }
+    }
+
+    private static int getMillsFromString(String[] parts){
+        try{
+            String mills = parts[3];
+            if(mills.isEmpty()){
+                return 0;
+            }else return Integer.parseInt(mills);
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return 0;
+        }
+    }
+
+    private static int getSecFromString(String[] parts){
+        try{
+            String sec = parts[2];
+            if(sec.isEmpty()){
+                return 0;
+            }else return Integer.parseInt(sec);
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return 0;
+        }
+    }
+
+    private static int getMinutesFromString(String[] parts){
+        try{
+            String min = parts[1];
+            if(min.isEmpty()){
+                return 0;
+            }else return Integer.parseInt(min);
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return 0;
+        }
+    }
+
+    private static int getHoursFromString(String[] parts){
+        try{
+            String hours = parts[0];
+            if(hours.isEmpty()){
+                return 0;
+            }else return Integer.parseInt(hours);
+        }catch(ArrayIndexOutOfBoundsException ae){
+            return 0;
+        }
+    }
+
+    private static CalendarDate convertToDate(String usersDate, String format) throws CalendarUnknownFormatException, DateInsaneException{
+        for(String line : formats){
+            if(format.equals(line)){
+                return convertToDateWithFormat(usersDate, format);
+            }
+        }
+        throw new CalendarUnknownFormatException("No such format yet");
+    }
+
+    private static CalendarDate convertToDateWithFormat(String usersDate, String format) throws CalendarUnknownFormatException, DateInsaneException{
+
+        return FormatterMakerUtil.getFormatterFactory(format).createFormatter(format).convertFromFormat(usersDate);
+    }
 }
