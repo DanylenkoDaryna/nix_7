@@ -27,6 +27,7 @@
         <logs.folder>logs</logs.folder>
         <logs.test.folder>test_logs</logs.test.folder>
         <logs.life.folder>life_logs</logs.life.folder>
+        <main.class.name>ua.com.alevel.Main7</main.class.name>
     </properties>
 
     <profiles>
@@ -55,32 +56,31 @@
 
 
     <dependencies>
-        <!-- junit-jupiter -->
+        <!-- JUNIT-JUPITER -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${maven.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${maven.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <version>${maven.junit.vintage.version}</version>
         </dependency>
-
+        <!-- SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <!-- LOGBACK -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -126,7 +126,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ua.com.alevel.Main7</mainClass>
+                            <mainClass>${main.class.name}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -145,7 +145,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ua.com.alevel.Main7</mainClass>
+                                    <mainClass>${main.class.name}</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

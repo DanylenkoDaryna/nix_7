@@ -49,7 +49,7 @@ public class CalendarController{
     public static void startApp(){
         MenuController.startAppMenu();
     }
-
+    
     public static CalendarDate inputDate(){
         boolean cycleBreaker = true;
         while(cycleBreaker){
@@ -122,7 +122,6 @@ public class CalendarController{
         System.out.println(AppMessages.ENTER_DATE + AppMessages.ENTER_DATE_EXAMPLE);
         String usersDate = getUsersPreEditedInput();
         return convertToDate(usersDate, format);
-
     }
 
     public static CalendarDate convertToDate(String usersDate){
@@ -136,7 +135,6 @@ public class CalendarController{
             setDatePart(calendarDate, usersDate);
         }
         setDateAverageMills(calendarDate);
-
         return calendarDate;
     }
 
@@ -270,7 +268,6 @@ public class CalendarController{
     }
 
     private static CalendarDate convertToDateWithFormat(String usersDate, String format) throws CalendarUnknownFormatException, DateInsaneException{
-
         return FormatterMakerUtil.getFormatterFactory(format).createFormatter(format).convertFromFormat(usersDate);
     }
 }

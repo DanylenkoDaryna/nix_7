@@ -41,9 +41,9 @@ public class AppMessages{
     public static final String WARN_INCORRECT_PUBLISHER = "Publisher should not consist of numbers only!";
     public static final String WARN_INCORRECT_PAGES = "Wrong! Need a correct number of pages!";
     public static final String WARN_INCORRECT_FIRST_LAST_NAME = "Last name can not be like first name!";
-    public static final String WARN_INCORRECT_FIRST_NAME = "Wrong! Print correct first name in format 'Anton'!";
+    public static final String WARN_INCORRECT_FIRST_NAME = "Wrong! Print correct first name in formatter 'Anton'!";
     public static final String WARN_INCORRECT_FIRST_NAME_SIZE = "Out of allowed size for name!";
-    public static final String WARN_INCORRECT_LAST_NAME = "Wrong! Print correct last name in format 'Sentsov'!";
+    public static final String WARN_INCORRECT_LAST_NAME = "Wrong! Print correct last name in formatter 'Sentsov'!";
     public static final String WARN_INCORRECT_LAST_NAME_SIZE = "Out of allowed size for last name!";
 
     public static final String REGEX_FOR_ID = "^[0-9]+$";

@@ -37,8 +37,8 @@ class AuthorServiceImplTest{
         bookShelfDB.getAuthorCatalogue().clear();
     }
 
-    @Test
     @Order(1)
+    @Test
     void checkAllAuthors(){
         LOGGER_INFO.info("test 1");
         System.out.println("test 1");
@@ -48,8 +48,8 @@ class AuthorServiceImplTest{
         assert (testAuthor.getId() == catalogueAuthor.getId());
     }
 
-    @Test
     @Order(2)
+    @Test
     public void checkAuthorRead(){
         System.out.println("test 2");
         int id = ((Author) authorService.findAll().get(1)).getId();
@@ -57,8 +57,8 @@ class AuthorServiceImplTest{
         assert (catalogueAuthor.getFullName().equals("Taras Shevchenko The 1th"));
     }
 
-    @Test
     @Order(3)
+    @Test
     void checkAuthorUpdate(){
         System.out.println("test 3");
         Author catalogueAuthor = (Author) authorService.findAll().get(5);
@@ -69,8 +69,8 @@ class AuthorServiceImplTest{
         assert (updatedAuthor.getFullName().equals("Panteleimon Kulish"));
     }
 
-    @Test
     @Order(4)
+    @Test
     void checkAuthorDelete(){
         System.out.println("test 4");
 

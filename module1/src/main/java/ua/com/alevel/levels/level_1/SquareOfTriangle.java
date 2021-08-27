@@ -7,7 +7,7 @@ public class SquareOfTriangle {
 
     private static final String REGEX_FOR_COORDINATES = "^[-+]?[0-9]+[;][-+]?[0-9]+$";
     private static final String BORDER = "----------------------------\n";
-    private static final String COMMANDS = "Input coordinates in format '-1;3'" +
+    private static final String COMMANDS = "Input coordinates in formatter '-1;3'" +
             "or 'q' to exit \n";
     private static final String INCORRECT_INPUT = "Incorrect input. Try Again..";
 
