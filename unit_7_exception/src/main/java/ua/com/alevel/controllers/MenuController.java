@@ -29,7 +29,7 @@ public class MenuController{
                     chooseOperationWithDate();
                     break;
                 case "q":
-                    menuCycleBreaker = false;
+                    System.exit(0);
                     break;
                 default:
                     Menu.notifyOfIncorrectInput();

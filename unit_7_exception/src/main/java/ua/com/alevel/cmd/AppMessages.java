@@ -21,7 +21,7 @@ public class AppMessages{
     public static final String CHOOSE_TO_SUBSTRACT_DATES = "If you want to substract smth from date, please, enter 3\n";
     public static final String CHOOSE_TO_SORT_DATES = "If you want to sort dates, please, enter 4\n";
     public static final String CHOOSE_TO_SHOW_DATE = "If you want to see your date in standard wiew, please, enter 5\n";
-    public static final String EXIT_BY_Q = "q\n";
+    public static final String EXIT_BY_Q = "q";
 
     public static final String DIFFERENCE_IN_YEARS = "If you want difference in years, please, enter 1\n";
     public static final String DIFFERENCE_IN_DAYS = "If you want difference in days, please, enter 2\n";

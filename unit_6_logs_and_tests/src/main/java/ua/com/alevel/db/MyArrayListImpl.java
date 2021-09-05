@@ -59,25 +59,6 @@ public class MyArrayListImpl<T extends Object> implements Array{
         }
     }
 
-//    @Override
-//    public int indexOf(Object element){
-//
-//        if(element == null){
-//            for (int i = 0; i < size; i++){
-//                if(getArray()[i] == null){
-//                    return i;
-//                }
-//            }
-//        }else{
-//            for(int i = 0; i < size; i++){
-//                if(element.equals(getArray()[i])){
-//                    return i;
-//                }
-//            }
-//        }
-//        return -1;
-//    }
-
     @Override
     public void remove(int index){
         if(index >= size){
@@ -127,15 +108,16 @@ public class MyArrayListImpl<T extends Object> implements Array{
 
     @Override
     public Iterator iterator(){
-        return null;
+        return new IteratorImpl();
     }
 
     class IteratorImpl implements Iterator{
 
+        private static final short NO_SUCH_INDEX = -1;
         // index of next element to return
         private int cursor;
         // index of last element returned; -1 if no such
-        private int lastRet = -1;
+        private int lastRet = NO_SUCH_INDEX;
 
         IteratorImpl(){
         }
@@ -154,7 +136,6 @@ public class MyArrayListImpl<T extends Object> implements Array{
             cursor = i + 1;
             lastRet = i;
             return getArray()[lastRet];
-
         }
 
         @Override
@@ -164,23 +145,23 @@ public class MyArrayListImpl<T extends Object> implements Array{
             }
             MyArrayListImpl.this.remove(lastRet);
             cursor = lastRet;
-            lastRet = -1;
+            lastRet = NO_SUCH_INDEX;
         }
     }
 
-    public Object[] getArray(){
+    private Object[] getArray(){
         return array;
     }
 
-    public void setArray(T[] array){
+    private void setArray(T[] array){
         this.array = array;
     }
 
-    public int getSize(){
+    private int getSize(){
         return size;
     }
 
-    public void setSize(int size){
+    private void setSize(int size){
         this.size = size;
     }
 }
