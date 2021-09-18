@@ -4,7 +4,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class MathSet<T extends Number> implements Iterable{
+public class MathSet<T extends Number> implements Iterable<T> {
+
     private T[] set;
     private static final int INITIAL_CAPACITY = 10;
     private int size;
