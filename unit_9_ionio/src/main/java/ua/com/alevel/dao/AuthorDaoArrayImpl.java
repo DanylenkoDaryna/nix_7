@@ -4,33 +4,33 @@ import ua.com.alevel.db.BookShelfDb;
 import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Author;
 
-public class AuthorDaoArrayImpl implements AuthorDao{
+public class AuthorDaoArrayImpl{
 
     private AuthorDaoArrayImpl(){
         System.out.println("Dao.AuthorDaoArrayImpl");
     }
 
-    @Override
+    //@Override
     public void create(Author author){
         BookShelfDb.getInstance().createAuthor(author);
     }
 
-    @Override
+    //@Override
     public Author read(long id){
         return BookShelfDb.getInstance().readAuthor(id);
     }
 
-    @Override
+    //@Override
     public MyArrayListImpl<Author> findAll(){
         return BookShelfDb.getInstance().readAllAuthors();
     }
 
-    @Override
+    //@Override
     public void update(Author author){
         BookShelfDb.getInstance().updateAuthor(author);
     }
 
-    @Override
+    //@Override
     public void delete(long id){
         BookShelfDb.getInstance().deleteAuthor(id);
     }

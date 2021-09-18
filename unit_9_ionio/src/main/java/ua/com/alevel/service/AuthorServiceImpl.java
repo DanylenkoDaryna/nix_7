@@ -2,8 +2,9 @@ package ua.com.alevel.service;
 
 import ua.com.alevel.config.ObjectFactory;
 import ua.com.alevel.dao.AuthorDao;
-import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Author;
+
+import java.util.List;
 
 public class AuthorServiceImpl implements AuthorService{
 
@@ -21,7 +22,7 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
-    public MyArrayListImpl<Author> findAll(){
+    public List<Author> findAll(){
         return authorDao.findAll();
     }
 

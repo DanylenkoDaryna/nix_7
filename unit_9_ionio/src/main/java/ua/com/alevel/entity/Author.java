@@ -1,13 +1,10 @@
 package ua.com.alevel.entity;
 
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Author extends Entity implements Serializable{
 
     private String fullName;
-    private ArrayList<Integer> booksId;
 
     public Author(){
     }
@@ -18,10 +15,10 @@ public class Author extends Entity implements Serializable{
 
     @Override
     public String toString(){
-        return "Author{" +
-                "id=" + getId() +
-                ", fullName='" + fullName + '\'' +
-                '}';
+        return "Author{"
+                + "id = " + getId() +
+                ", fullName = '"
+                + fullName + '\'' + "}\n";
     }
 
     public String getFullName(){

@@ -45,7 +45,7 @@ public class MenuController{
                     controller.findBook();
                     break;
                 case "3":
-                    controller.FindAllBooks();
+                    controller.findAllBooks();
                     break;
                 case "4":
                     controller.updateBook();
@@ -60,7 +60,7 @@ public class MenuController{
                     controller.findAuthor();
                     break;
                 case "8":
-                    controller.FindAllAuthors();
+                    controller.findAllAuthors();
                     break;
                 case "9":
                     controller.updateAuthor();

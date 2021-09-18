@@ -3,39 +3,25 @@ package ua.com.alevel.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.com.alevel.cmd.AppMessages;
-import ua.com.alevel.cmd.Menu;
 import ua.com.alevel.config.ObjectFactory;
-import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Author;
 import ua.com.alevel.entity.Book;
-import ua.com.alevel.facade.BookFacade;
 import ua.com.alevel.facade.Facade;
 import ua.com.alevel.service.AuthorService;
-import ua.com.alevel.service.AuthorServiceImpl;
 import ua.com.alevel.service.BookService;
-import ua.com.alevel.service.BookServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class App9Controller{
 
-    private static Scanner scanner;
     private final Facade bookFacade = ObjectFactory.getInstance().getImplClass(Facade.class);
     private final BookService bookService = ObjectFactory.getInstance().getImplClass(BookService.class);
     private final AuthorService authorService = ObjectFactory.getInstance().getImplClass(AuthorService.class);
     private static final Logger LOGGER_ERR = LoggerFactory.getLogger("error");
-
-    private static Scanner getScanner(){
-        if(scanner == null){
-            scanner = new Scanner(System.in);
-            return scanner;
-        }else
-            return scanner;
-    }
 
     private static BufferedReader getReader(){
         BufferedReader mainReader = null;
@@ -49,9 +35,12 @@ public class App9Controller{
     }
 
     public static String getUsersPreEditedCommand(){
-        //return getScanner().nextLine().trim().toLowerCase().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
         try{
             return getReader().readLine().trim().toLowerCase().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+        }catch(NullPointerException ne){
+            LOGGER_ERR.error(ne.getMessage());
+            System.out.println("method getReader() returned null");
+            return getUsersPreEditedCommand();
         }catch(IOException e){
             LOGGER_ERR.error(e.getMessage());
             System.out.println(e.getMessage());
@@ -59,7 +48,7 @@ public class App9Controller{
         }
     }
 
-    public static String getUsersPreEditedInput(){
+    private static String getUsersPreEditedInput(){
         try{
             return getReader().readLine().trim();
         }catch(IOException e){
@@ -80,15 +69,16 @@ public class App9Controller{
 
     void createBook(){
         String title = enterBookTitle();
-        MyArrayListImpl<Author> authors = enterAuthors();
+        ArrayList<Author> authors = enterAuthors();
         String publisher = enterPublisher();
         int pages = Integer.parseInt(enterNumOfPages());
         bookFacade.register(title, authors, publisher, pages);
+        System.out.println(bookService.findAll());
     }
 
     private static int enterId(){
         System.out.println(AppMessages.ASK_TO_ENTER_ID);
-        String id = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+        String id = getUsersPreEditedInput();
         return checkId(id);
     }
 
@@ -101,14 +91,13 @@ public class App9Controller{
         }
     }
 
-    public static boolean isIdMatchesRules(String id){
-
+    private static boolean isIdMatchesRules(String id){
         return id.matches(AppMessages.REGEX_FOR_ID);
     }
 
     private static String enterBookTitle(){
         System.out.println(AppMessages.ASK_TO_ENTER_TITLE);
-        String title = getScanner().nextLine().trim();
+        String title = getUsersPreEditedInput();
         return checkBookTitle(title);
     }
 
@@ -121,7 +110,7 @@ public class App9Controller{
         }
     }
 
-    public static boolean checkTitleNotNums(String title){
+    private static boolean checkTitleNotNums(String title){
         if(titleMatchesRules(title)){
             return true;
         }
@@ -132,15 +121,15 @@ public class App9Controller{
         return !title.matches(AppMessages.REGEX_IT_IS_NOT_A_TITLE);
     }
 
-    private static MyArrayListImpl<Author> enterAuthors(){
-        MyArrayListImpl<Author> authors = new MyArrayListImpl<>();
+    private static ArrayList<Author> enterAuthors(){
+        ArrayList<Author> authors = new ArrayList<>();
         System.out.println(AppMessages.ASK_TO_ENTER_AUTHOR);
         boolean cyclebreaker = true;
         while(cyclebreaker){
             Author author = makeAuthor();
             authors.add(author);
             System.out.println(AppMessages.ASK_TO_ENTER_ANOTHER_AUTHOR_OR_QUIT);
-            String input = getScanner().nextLine().trim();
+            String input = getUsersPreEditedCommand();
             if(input.equals(AppMessages.EXIT_BY_Q)){
                 cyclebreaker = false;
             }
@@ -150,7 +139,7 @@ public class App9Controller{
 
     private static String enterPublisher(){
         System.out.println(AppMessages.ASK_TO_ENTER_PUBLISHER);
-        String publisher = getScanner().nextLine().trim();
+        String publisher = getUsersPreEditedInput();
         return checkPublisher(publisher);
     }
 
@@ -163,7 +152,7 @@ public class App9Controller{
         }
     }
 
-    public static boolean checkPublisherNotNums(String publisher){
+    private static boolean checkPublisherNotNums(String publisher){
         if(publisherMatchesRules(publisher)){
             return true;
         }
@@ -176,7 +165,7 @@ public class App9Controller{
 
     private static String enterNumOfPages(){
         System.out.println(AppMessages.ASK_TO_ENTER_PAGES);
-        String pages = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+        String pages = getUsersPreEditedInput();
         return checkNumOfPages(pages);
     }
 
@@ -189,7 +178,7 @@ public class App9Controller{
         }
     }
 
-    public static boolean pagesMatchTheRules(String pages){
+    private static boolean pagesMatchTheRules(String pages){
         if(!pages.matches(AppMessages.REGEX_FOR_PAGES)){
             return false;
         }else if(pages.length() > AppMessages.MAX_NUM_OF_PAGES){
@@ -208,17 +197,19 @@ public class App9Controller{
         }
     }
 
-    void FindAllBooks(){
-        MyArrayListImpl<Book> allBooks = bookService.findAll();
+    void findAllBooks(){
+        ArrayList<Book> allBooks = (ArrayList<Book>) bookService.findAll();
         System.out.println(allBooks.toString());
     }
 
     void updateBook(){
-        int id = enterId();
+        long id = enterId();
         String title = enterBookTitle();
+        ArrayList<Author> authors = enterAuthors();
         String publisher = enterPublisher();
         int pages = Integer.parseInt(enterNumOfPages());
-        bookFacade.update(id, title, publisher, pages);
+        bookFacade.update(id, title, authors, publisher, pages);
+        System.out.println(bookService.findAll());
     }
 
     void deleteBook(){
@@ -234,6 +225,7 @@ public class App9Controller{
     void createAuthor(){
         Author author = makeAuthor();
         authorService.create(author);
+        System.out.println(authorService.findAll());
     }
 
     private static Author makeAuthor(){
@@ -247,13 +239,13 @@ public class App9Controller{
 
     private static String enterFirstName(){
         System.out.println(AppMessages.ASK_TO_ENTER_FIRST_NAME);
-        String firstName = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+        String firstName = getUsersPreEditedInput();
         return checkFirstName(firstName);
     }
 
     private static String enterLastName(){
         System.out.println(AppMessages.ASK_TO_ENTER_LAST_NAME);
-        String lastName = getScanner().nextLine().trim().replaceAll(AppMessages.SPACE, AppMessages.NO_SPACE);
+        String lastName = getUsersPreEditedInput();
         return checkLastName(lastName);
     }
 
@@ -266,7 +258,7 @@ public class App9Controller{
         }
     }
 
-    public static boolean isFullNameFollowRules(String name, String lastName){
+    private static boolean isFullNameFollowRules(String name, String lastName){
         return !name.equals(lastName);
     }
 
@@ -288,7 +280,7 @@ public class App9Controller{
         }
     }
 
-    public static boolean isNameFollowRules(String name){
+    private static boolean isNameFollowRules(String name){
         if(!name.matches(AppMessages.REGEX_FOR_NAME)){
             System.out.println(AppMessages.WARN_INCORRECT_FIRST_NAME);
             return false;
@@ -300,7 +292,7 @@ public class App9Controller{
         return true;
     }
 
-    public static boolean isLastNameFollowRules(String name){
+    private static boolean isLastNameFollowRules(String name){
         if(!name.matches(AppMessages.REGEX_FOR_NAME)){
             System.out.println(AppMessages.WARN_INCORRECT_LAST_NAME);
             return false;
@@ -319,12 +311,11 @@ public class App9Controller{
             System.out.println(author);
         }catch(NullPointerException ne){
             LOGGER_ERR.error(ne.getMessage());
-            //MenuController.startAppMenu();
         }
     }
 
-    void FindAllAuthors(){
-        MyArrayListImpl<Author> allAuthors = authorService.findAll();
+    void findAllAuthors(){
+        ArrayList<Author> allAuthors = (ArrayList<Author>) authorService.findAll();
         System.out.println(allAuthors.toString());
     }
 
@@ -333,6 +324,7 @@ public class App9Controller{
         Author author = makeAuthor();
         author.setId(id);
         authorService.update(author);
+        System.out.println(authorService.findAll());
     }
 
     void deleteAuthor(){

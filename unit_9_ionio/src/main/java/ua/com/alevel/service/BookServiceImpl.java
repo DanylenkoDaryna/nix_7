@@ -2,8 +2,9 @@ package ua.com.alevel.service;
 
 import ua.com.alevel.config.ObjectFactory;
 import ua.com.alevel.dao.BookDao;
-import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Book;
+
+import java.util.List;
 
 
 public class BookServiceImpl implements BookService{
@@ -22,7 +23,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public MyArrayListImpl<Book> findAll(){
+    public List<Book> findAll(){
         return bookDao.findAll();
     }
 

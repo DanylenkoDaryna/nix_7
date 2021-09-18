@@ -8,16 +8,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ua.com.alevel.entity.Author;
 import ua.com.alevel.entity.Book;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +31,6 @@ class DsonTest{
 
     @BeforeAll
     static void makeBooks(){
-
-        // System.out.println("makeBooks Before");
-        dson = new Dson();
         Book book = GenerateForTestsUtil.generateBook(0);
         book.setId(GenerateForTestsUtil.generateFirstId());
         books.add(book);
@@ -56,7 +49,6 @@ class DsonTest{
 
     @BeforeAll
     static void makeAuthors(){
-        // System.out.println("makeAuthors Before");
         Author author = GenerateForTestsUtil.generateAuthor(0);
         author.setId(GenerateForTestsUtil.generateFirstId());
         authors.add(author);
@@ -69,7 +61,6 @@ class DsonTest{
 
     @BeforeAll
     static void makeDson(){
-        System.out.println("makeDson Before");
         dson = new Dson();
     }
 
@@ -87,13 +78,6 @@ class DsonTest{
     void test1(){
         System.out.println(books.toString());
         System.out.println();
-        // System.out.println(authors.toString());
-    }
-
-    @Test
-    void test2() throws IOException{
-        Dson dson = new Dson();
-        List<String> s = Files.readAllLines(Paths.get(PATH_TO_AUTHORS_FILE));
     }
 
     @Test
@@ -171,7 +155,6 @@ class DsonTest{
     @Test
     void convertAuthorToDsonTest(){
         System.out.println();
-        System.out.println();
         Author author = new Author("Lady Di");
         author.setId(23);
         System.out.println(dson.convertToJson(author));
@@ -180,13 +163,11 @@ class DsonTest{
     @Test
     void convertBookToDsonTest(){
         System.out.println();
-        System.out.println();
         System.out.println(dson.convertToJson(books.get(0)));
     }
 
     @Test
     void convertAuthorsToDsonTest(){
-        System.out.println();
         System.out.println();
         System.out.println(dson.convertToJson(authors));
     }
@@ -194,7 +175,52 @@ class DsonTest{
     @Test
     void convertBooksToDsonTest(){
         System.out.println();
-        System.out.println();
         System.out.println(dson.convertToJson(books));
+    }
+
+    @Test
+    void convertAuthorFromDsonTest(){
+        System.out.println();
+        Author author = new Author("Lady Di");
+        author.setId(23);
+        String dsonObj = dson.convertToJson(author);
+        System.out.println(dsonObj);
+        Author author1 = (Author) dson.parseObjectFromJson(dsonObj, Author.class);
+        System.out.println();
+        System.out.println();
+        System.out.println(author1.toString());
+    }
+
+    @Test
+    void convertBookFromDsonTest(){
+        System.out.println();
+        String dsonObj = dson.convertToJson(books.get(0));
+        System.out.println(dsonObj);
+        Book book1 = (Book) dson.parseObjectFromJson(dsonObj, Book.class);
+        System.out.println();
+        System.out.println();
+        System.out.println(book1.toString());
+    }
+
+    @Test
+    void convertAuthorsFromDsonTest(){
+        System.out.println();
+        String dsonObj = dson.convertToJson(authors);
+        System.out.println(dsonObj);
+        List<Author> localAuthors = (ArrayList<Author>) dson.parseListFromJson(dsonObj, ArrayList.class, Author.class);
+        System.out.println();
+        System.out.println();
+        System.out.println(localAuthors.toString());
+    }
+
+    @Test
+    void convertBooksFromDsonTest(){
+        System.out.println();
+        String dsonObj = dson.convertToJson(books);
+        System.out.println(dsonObj);
+        System.out.println();
+        System.out.println();
+        List<Book> books = (ArrayList<Book>) dson.parseListFromJson(dsonObj, ArrayList.class, Book.class);
+        System.out.println(books.toString());
     }
 }

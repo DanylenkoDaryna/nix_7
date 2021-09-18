@@ -1,7 +1,8 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Author;
+
+import java.util.List;
 
 public interface AuthorService{
 
@@ -9,7 +10,7 @@ public interface AuthorService{
 
     Author read(long id);
 
-    MyArrayListImpl<Author> findAll();
+    List<Author> findAll();
 
     void update(Author author);
 

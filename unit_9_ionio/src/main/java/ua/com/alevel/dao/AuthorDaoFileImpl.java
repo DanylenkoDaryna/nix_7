@@ -1,45 +1,51 @@
 package ua.com.alevel.dao;
 
-import ua.com.alevel.db.FileDb;
-import ua.com.alevel.db.MyArrayListImpl;
+import ua.com.alevel.db.GsonConverterFileDb;
 import ua.com.alevel.entity.Author;
 
-public class AuthorDaoFileImpl implements AuthorDao{
+import java.util.List;
 
-//    private static final FileDb fileDb = new FileDb();
-//
-//    public static FileDb getFileDb(){
-//        return fileDb;
-//    }
+public class AuthorDaoFileImpl
+//        implements AuthorDao
+{
+
+    private static GsonConverterFileDb fileDb;
+
+    private static GsonConverterFileDb getInstance(){
+        if(fileDb == null){
+            fileDb = new GsonConverterFileDb();
+        }
+        return fileDb;
+    }
 
     public AuthorDaoFileImpl(){
         System.out.println("Dao.AuthorDaoFileImpl");
     }
 
-    @Override
+    //    @Override
     public void create(Author author){
-        new FileDb().saveAuthor(author);
+        getInstance().saveAuthor(author);
     }
 
-    @Override
+    //    @Override
     public Author read(long id){
-        return new FileDb().findAuthor(id);
+        return getInstance().findAuthor(id);
     }
 
-    @Override
-    public MyArrayListImpl<Author> findAll(){
-        return new FileDb().findAllAuthors();
+    //    @Override
+    public List<Author> findAll(){
+        return getInstance().findAllAuthors();
     }
 
-    @Override
+    //    @Override
     public void update(Author author){
         //todo
-        new FileDb().saveAuthor(author);
-        new FileDb().updateAuthor(author);
+        //new FileDb().saveAuthor(author);
+        getInstance().updateAuthor(author);
     }
 
-    @Override
+    //    @Override
     public void delete(long id){
-        new FileDb().deleteAuthor(id);
+        getInstance().deleteAuthor(id);
     }
 }

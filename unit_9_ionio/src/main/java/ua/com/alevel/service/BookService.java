@@ -1,7 +1,8 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Book;
+
+import java.util.List;
 
 public interface BookService{
 
@@ -9,7 +10,7 @@ public interface BookService{
 
     Book read(long id);
 
-    MyArrayListImpl<Book> findAll();
+    List<Book> findAll();
 
     void update(Book book);
 

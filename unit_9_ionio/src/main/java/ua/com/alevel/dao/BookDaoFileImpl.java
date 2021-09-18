@@ -1,44 +1,49 @@
 package ua.com.alevel.dao;
 
-import ua.com.alevel.db.FileDb;
-import ua.com.alevel.db.MyArrayListImpl;
+import ua.com.alevel.db.GsonConverterFileDb;
 import ua.com.alevel.entity.Book;
 
-public class BookDaoFileImpl implements BookDao{
+import java.util.List;
 
-//    private static FileDb fileDb;
-//
-//    private static FileDb getFileDb(){
-//        return fileDb;
-//    }
+public class BookDaoFileImpl
+//        implements BookDao
+{
+
+    private static GsonConverterFileDb fileDb;
+
+    private static GsonConverterFileDb getInstance(){
+        if(fileDb == null){
+            fileDb = new GsonConverterFileDb();
+        }
+        return fileDb;
+    }
 
     public BookDaoFileImpl(){
         System.out.println("Dao.BookDaoFileImpl");
-        // fileDb = new FileDb();
     }
 
-    @Override
+    //    @Override
     public void create(Book book){
-        new FileDb().saveBook(book);
+        getInstance().saveBook(book);
     }
 
-    @Override
+    //    @Override
     public Book read(long id){
-        return new FileDb().findBook(id);
+        return getInstance().findBook(id);
     }
 
-    @Override
-    public MyArrayListImpl<Book> findAll(){
-        return new FileDb().findAllBooks();
+    //    @Override
+    public List<Book> findAll(){
+        return getInstance().findAllBooks();
     }
 
-    @Override
+    //    @Override
     public void update(Book book){
-        new FileDb().updateBook(book);
+        getInstance().updateBook(book);
     }
 
-    @Override
+    //    @Override
     public void delete(long id){
-        new FileDb().deleteBook(id);
+        getInstance().deleteBook(id);
     }
 }

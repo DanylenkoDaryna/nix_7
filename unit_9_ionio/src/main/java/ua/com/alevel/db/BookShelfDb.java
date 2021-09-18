@@ -3,6 +3,7 @@ package ua.com.alevel.db;
 import ua.com.alevel.entity.Author;
 import ua.com.alevel.entity.Book;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BookShelfDb{
@@ -29,10 +30,10 @@ public class BookShelfDb{
 
     public void createBook(Book book){
         book.setId(generateBookId());
-        MyArrayListImpl<Author> tempAuthors = book.getAuthors();
+        ArrayList<Author> tempAuthors = (ArrayList<Author>) book.getAuthors();
         for(int i = 0; i < tempAuthors.size(); i++){
-            ((Author) tempAuthors.get(i)).setId(generateAuthorId());
-            checkAndAddAuthor((Author) tempAuthors.get(i));
+            (tempAuthors.get(i)).setId(generateAuthorId());
+            checkAndAddAuthor(tempAuthors.get(i));
         }
         bookShelf.add(book);
     }

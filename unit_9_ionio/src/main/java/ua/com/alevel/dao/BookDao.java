@@ -1,7 +1,8 @@
 package ua.com.alevel.dao;
 
-import ua.com.alevel.db.MyArrayListImpl;
 import ua.com.alevel.entity.Book;
+
+import java.util.List;
 
 public interface BookDao{
 
@@ -9,7 +10,7 @@ public interface BookDao{
 
     Book read(long id);
 
-    MyArrayListImpl<Book> findAll();
+    List<Book> findAll();
 
     void update(Book book);
 

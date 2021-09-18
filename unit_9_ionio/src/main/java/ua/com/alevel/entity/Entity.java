@@ -3,6 +3,7 @@ package ua.com.alevel.entity;
 import java.io.Serializable;
 
 public abstract class Entity implements Serializable{
+
     private long id;
 
     public long getId(){
