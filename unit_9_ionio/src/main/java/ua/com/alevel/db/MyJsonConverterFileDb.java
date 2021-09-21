@@ -17,8 +17,10 @@ import java.util.Random;
 
 public class MyJsonConverterFileDb{
 
-    private static final String PATH_TO_BOOKS_FILE = "unit_9_ionio\\books.json";
-    private static final String PATH_TO_AUTHORS_FILE = "unit_9_ionio\\authors.json";
+    //    private static final String PATH_TO_BOOKS_FILE = "books.json";
+    private static final String PATH_TO_BOOKS_FILE = "books.json";
+    //    private static final String PATH_TO_AUTHORS_FILE = "authors.json";
+    private static final String PATH_TO_AUTHORS_FILE = "authors.json";
     private static final Logger LOGGER_ERR = LoggerFactory.getLogger("error");
 
     public MyJsonConverterFileDb(){

@@ -29,6 +29,7 @@
         <logs.test.folder>test_logs</logs.test.folder>
         <logs.life.folder>life_logs</logs.life.folder>
         <main.class.name>ua.com.alevel.Main8</main.class.name>
+        <final.jar.name>unit8</final.jar.name>
     </properties>
 
     <profiles>
@@ -97,7 +98,7 @@
     </dependencies>
 
     <build>
-        <finalName>unit8</finalName>
+        <finalName>${final.jar.name}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
