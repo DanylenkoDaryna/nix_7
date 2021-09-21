@@ -14,30 +14,37 @@
         <module>unit_6_logs_and_tests</module>
         <module>unit_7_exception</module>
         <module>unit_8_collection</module>
+        <module>unit_9_ionio</module>
+        <module>Dson</module>
+        <module>module2</module>
+        <module>DateFormatter</module>
+        <module>NameSorter</module>
+        <module>PathSearcher</module>
+        <module>unit_10_db</module>
     </modules>
     <name>app</name>
     <url>http://maven.apache.org</url>
 
     <properties>
 
-        <java.version>11</java.version>
-        <commons.lang3.version>3.11</commons.lang3.version>
+        <java.version>8</java.version>
+        <!--<commons.lang3.version>3.11</commons.lang3.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
-
+        <main.class.name>ua.com.alevel.App</main.class.name>
         <!--    <maven.compiler.source>11</maven.compiler.source>-->
         <!--    <maven.compiler.target>11</maven.compiler.target>-->
         <!--    <java.version>11</java.version>-->
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons.lang3.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.commons</groupId>-->
+        <!--<artifactId>commons-lang3</artifactId>-->
+        <!--<version>${commons.lang3.version}</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -61,7 +68,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ua.com.alevel.App</mainClass>
+                            <mainClass>${main.class.name}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -85,7 +92,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ua.com.alevel.App</mainClass>
+                                    <mainClass>${main.class.name}</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
