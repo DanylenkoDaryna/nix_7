@@ -21,6 +21,8 @@
         <module>NameSorter</module>
         <module>PathSearcher</module>
         <module>unit_10_db</module>
+        <module>practice1</module>
+        <module>unit_11_reflection</module>
     </modules>
     <name>app</name>
     <url>http://maven.apache.org</url>

@@ -1,4 +1,4 @@
-package ua.com.alevel.util;
+package ua.com.alevel.mapper;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -93,7 +93,7 @@ public class Parser{
                     tempField.setAccessible(true);
                     Type listType = result.getClass().getDeclaredField(entry.getKey()).getType();
                     switch(listType.getTypeName()){
-                        case "java.util.List":{
+                        case "java.mapper.List":{
                             ParameterizedType paramListType = (ParameterizedType) tempField.getGenericType();
                             Class<?> listClass = (Class<?>) paramListType.getActualTypeArguments()[0];
                             ArrayList list = (ArrayList) parseArray(value, listClass);

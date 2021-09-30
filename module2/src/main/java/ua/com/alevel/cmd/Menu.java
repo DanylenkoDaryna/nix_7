@@ -4,7 +4,7 @@ package ua.com.alevel.cmd;
 public class Menu{
 
     private Menu(){
-        System.out.println("it`s util class!");
+        System.out.println("it`s mapper class!");
     }
 
     public static void showMainMenu(){

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import ua.com.alevel.controllers.CalendarController;
 import ua.com.alevel.entity.CalendarDate;
-import ua.com.alevel.util.DateFormatterUtil;
+import ua.com.alevel.mapper.DateFormatterUtil;
 
 class TestDateConverting{
 

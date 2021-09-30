@@ -6,7 +6,7 @@ import ua.com.alevel.cmd.Menu;
 public class MenuController{
 
     private MenuController(){
-        System.out.println("This is util class");
+        System.out.println("This is mapper class");
     }
 
     private static void notifyOfIncorrectInput(){

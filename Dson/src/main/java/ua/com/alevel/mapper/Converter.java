@@ -1,4 +1,4 @@
-package ua.com.alevel.util;
+package ua.com.alevel.mapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

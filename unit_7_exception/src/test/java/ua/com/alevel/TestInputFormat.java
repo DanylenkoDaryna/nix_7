@@ -3,8 +3,7 @@ package ua.com.alevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import ua.com.alevel.controllers.CalendarController;
-import ua.com.alevel.util.CheckerDateFormatUtil;
+import ua.com.alevel.mapper.CheckerDateFormatUtil;
 
 class TestInputFormat{
 

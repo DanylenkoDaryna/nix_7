@@ -9,7 +9,7 @@ public class PSMessages{
     public static final String SPACE = " ";
 
     private PSMessages(){
-        System.out.println("it`s util class!");
+        System.out.println("it`s mapper class!");
     }
 
 }

@@ -3,7 +3,7 @@ package ua.com.alevel.cmd;
 public class AppMessages{
 
     private AppMessages(){
-        System.out.println("it`s util class!");
+        System.out.println("it`s mapper class!");
     }
 
     public static final String HORIZONTAL_BORDER = " ==========================================================\n";

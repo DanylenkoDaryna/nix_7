@@ -8,7 +8,7 @@ public class DFMessages{
     public static final String WRONG_TNPUT = "wrong input";
 
     private DFMessages(){
-        System.out.println("it`s util class!");
+        System.out.println("it`s mapper class!");
     }
 
 }

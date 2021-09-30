@@ -1,8 +1,8 @@
 package ua.com.alevel;
 
 
-import ua.com.alevel.util.Converter;
-import ua.com.alevel.util.Parser;
+import ua.com.alevel.mapper.Converter;
+import ua.com.alevel.mapper.Parser;
 
 import java.util.ArrayList;
 import java.util.List;

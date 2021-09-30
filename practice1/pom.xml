@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>1.0-SNAPSHOT</version>
-    <artifactId>unit_10_db</artifactId>
+    <artifactId>practice1</artifactId>
     <packaging>jar</packaging>
-
     <properties>
         <java.version>8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
@@ -29,10 +28,28 @@
         <logback.version>1.2.3</logback.version>
         <logs.folder>logs</logs.folder>
         <logs.life.folder>life_logs</logs.life.folder>
-        <reflections.version>0.9.12</reflections.version>
-        <main.class.name>ua.com.alevel.Main10</main.class.name>
-        <final.jar.name>unit10</final.jar.name>
+        <commons.codec.version>1.11</commons.codec.version>
+        <commons.io.version>2.7</commons.io.version>
+        <jackson.version>2.11.1</jackson.version>
+        <opencsv.version>5.2</opencsv.version>
+        <main.class.name>ua.com.alevel.MainPractice1</main.class.name>
+        <final.jar.name>practice1</final.jar.name>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>life</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <log.path>${logs.folder}/${logs.life.folder}</log.path>
+                <log.info>${log.path}/info.log</log.info>
+                <log.warn>${log.path}/warn.log</log.warn>
+                <log.error>${log.path}/error.log</log.error>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!-- JUNIT-JUPITER -->
@@ -77,22 +94,30 @@
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
         </dependency>
-
-        <!-- REFLECTIONS -->
+        <!-- IO/NIO -->
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>${reflections.version}</version>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons.codec.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
 
-        <!-- MYSQL-CONNECTOR-JAVA -->
+        <!-- JACKSON-->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.26</version>
-            <scope>runtime</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
-
+        <!-- OPEN CSV -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import ua.com.alevel.controllers.CalendarController;
 import ua.com.alevel.controllers.OperationController;
 import ua.com.alevel.entity.CalendarDate;
-import ua.com.alevel.util.ConverterToDateUtil;
-import ua.com.alevel.util.DateFormatterUtil;
-import ua.com.alevel.util.DateManipulationUtil;
+import ua.com.alevel.mapper.ConverterToDateUtil;
+import ua.com.alevel.mapper.DateFormatterUtil;
+import ua.com.alevel.mapper.DateManipulationUtil;
 
 import java.util.Set;
 import java.util.TreeSet;

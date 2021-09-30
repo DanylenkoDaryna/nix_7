@@ -30,7 +30,7 @@ public class AppMessages{
     }
 
     private AppMessages(){
-        System.out.println("it`s util class!");
+        System.out.println("it`s mapper class!");
     }
 
     public static ArrayList<String> getMenuList(){

@@ -1,4 +1,4 @@
-package ua.com.alevel.util;
+package ua.com.alevel.mapper;
 
 import ua.com.alevel.entity.CalendarDate;
 import ua.com.alevel.entity.Month;

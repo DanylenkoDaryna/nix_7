@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ua.com.alevel.controllers.CalendarController;
 import ua.com.alevel.entity.CalendarDate;
-import ua.com.alevel.util.ConverterToMsUtill;
+import ua.com.alevel.mapper.ConverterToMsUtill;
 
 
 class TestDateMills{
