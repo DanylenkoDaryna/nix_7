@@ -2,7 +2,6 @@ package ua.com.alevel.db;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.com.alevel.db.util.ConnectionMaker;
 import ua.com.alevel.db.util.Statements;
 import ua.com.alevel.entity.Route;
 
@@ -18,20 +17,15 @@ public class RouteDbManipulator implements RouteTable{
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteDbManipulator.class);
 
     @Override
-    public List<Route> getAll(){
+    public List<Route> getAll(Connection connection){
         List<Route> routes = new ArrayList<>();
-        try(Connection con = ConnectionMaker.getConnection()){
-            try(Statement statement = con.createStatement()){
-                ResultSet rs = statement.executeQuery(Statements.FIND_ALL_ROUTES);
-                while(rs.next()){
-                    routes.add(convertIntoLocation(rs));
-                }
-            }catch(SQLException e){
-                LOGGER.error("Problem with getAll() routes statement", e);
+        try(Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(Statements.FIND_ALL_ROUTES)){
+            while(rs.next()){
+                routes.add(convertIntoLocation(rs));
             }
         }catch(SQLException e){
-            LOGGER.error("Problem with connection", e);
-            System.out.println("Problem with connection!!");
+            LOGGER.error("Problem with getAll() routes statement", e);
         }
         return routes;
     }

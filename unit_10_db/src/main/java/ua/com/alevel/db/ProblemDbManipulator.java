@@ -2,7 +2,6 @@ package ua.com.alevel.db;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.com.alevel.db.util.ConnectionMaker;
 import ua.com.alevel.db.util.Statements;
 import ua.com.alevel.entity.Problem;
 
@@ -18,20 +17,15 @@ public class ProblemDbManipulator implements ProblemTable{
     private static final Logger LOGGER = LoggerFactory.getLogger(ProblemDbManipulator.class);
 
     @Override
-    public List<Problem> getAll(){
+    public List<Problem> getAll(Connection connection){
         List<Problem> problems = new ArrayList<>();
-        try(Connection con = ConnectionMaker.getConnection()){
-            try(Statement statement = con.createStatement()){
-                ResultSet rs = statement.executeQuery(Statements.FIND_ALL_PROBLEMS);
-                while(rs.next()){
-                    problems.add(convertIntoLocation(rs));
-                }
-            }catch(SQLException e){
-                LOGGER.error("Problem with getAll() problems statement!", e);
+        try(Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(Statements.FIND_ALL_PROBLEMS);){
+            while(rs.next()){
+                problems.add(convertIntoLocation(rs));
             }
         }catch(SQLException e){
-            LOGGER.error("Problem with connection", e);
-            System.out.println("Problem with connection!!");
+            LOGGER.error("Problem with getAll() problems statement!", e);
         }
         return problems;
     }

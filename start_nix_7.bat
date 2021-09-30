@@ -23,3 +23,19 @@ cd ..
 cd logs_and_tests
 call unit_6_start.bat
 cd ..
+
+cd unit_7_exception
+call unit_7_start.bat
+cd ..
+
+cd unit_8_collection
+call unit_8_start.bat
+cd ..
+
+cd unit_9_ionio
+call unit_9_start.bat
+cd ..
+
+cd unit_10_db
+call unit_10_start.bat
+cd ..

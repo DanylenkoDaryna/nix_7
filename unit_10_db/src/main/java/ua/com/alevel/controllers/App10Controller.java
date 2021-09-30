@@ -8,16 +8,19 @@ import ua.com.alevel.entity.Location;
 import ua.com.alevel.entity.Problem;
 import ua.com.alevel.entity.Route;
 import ua.com.alevel.entity.Solution;
+import ua.com.alevel.exceptions.NoDataInDbException;
 import ua.com.alevel.service.LocationService;
 import ua.com.alevel.service.ProblemService;
 import ua.com.alevel.service.RouteService;
 import ua.com.alevel.service.SolutionService;
 
+import java.sql.Connection;
 import java.util.*;
 
 public class App10Controller{
 
-    private static final Logger LOGGER_ERR = LoggerFactory.getLogger("error");
+    private static Connection connection;
+    private static final Logger LOGGER = LoggerFactory.getLogger(App10Controller.class);
     private static RouteService routeService = ObjectFactory.getInstance().getImplClass(RouteService.class);
     private static LocationService locationService = ObjectFactory.getInstance().getImplClass(LocationService.class);
     private static ProblemService problemService = ObjectFactory.getInstance().getImplClass(ProblemService.class);
@@ -25,43 +28,71 @@ public class App10Controller{
 
     private int[][] adjacentMatrix;
 
-    public void startApp(){
-        makeMatrix();
+    private App10Controller(){
     }
 
-    private void makeMatrix(){
-        Map<Integer, Integer> cities = new TreeMap<>();
-        List<Location> locations = locationService.getAll();
-        for(int i = 0; i < locations.size(); i++){
-            cities.put(locations.get(i).getId(), convertToArrayId(locations.get(i).getId()));
+    public App10Controller(Connection con){
+        connection = con;
+    }
+
+    public void startApp(){
+        try{
+            findLocations();
+        }catch(NoDataInDbException e){
+            LOGGER.error("we don`t have data for app!!", e);
         }
+    }
+
+    private void findLocations() throws NoDataInDbException{
+        List<Location> locations = locationService.getAll(connection);
         if(locations.isEmpty()){
-            System.out.println("we don`t have any locations!!");
-            LOGGER_ERR.error("we don`t have any locations!!");
+            LOGGER.error("we don`t have any locations in controller!!");
+            throw new NoDataInDbException("Locations in db are empty!");
         }else{
-            adjacentMatrix = new int[locations.size()][locations.size()];
-            List<Route> routes = routeService.getAllRoutes();
+            makeMatrix(locations.size());
+            solveProblems(locations);
+        }
+    }
+
+    private void makeMatrix(int size) throws NoDataInDbException{
+        adjacentMatrix = new int[size][size];
+        List<Route> routes = routeService.getAll(connection);
+        if(routes.isEmpty()){
+            LOGGER.error("we don`t have any routes in controller!!");
+            throw new NoDataInDbException("Routes in db are empty!");
+        }else{
             for(int i = 0; i < routes.size(); i++){
                 int rowElem = convertToArrayId(routes.get(i).getFromId());
                 int columnElem = convertToArrayId(routes.get(i).getToId());
                 adjacentMatrix[rowElem][columnElem] = routes.get(i).getCost();
             }
-            showAdjacentMatrix();
-            List<Problem> problems = problemService.getAll();
-            if(!problems.isEmpty()){
-                List<Solution> solutions = new ArrayList<>();
-                for(Problem tempProblem : problems){
-                    int cheapestCost = findCheapestWayBetween(tempProblem.getFromId(), tempProblem.getToId(), cities);
-                    if(cheapestCost > Messages10.MAX_PATH_COST){
-                        LOGGER_ERR.error("The way can not be greater than " + Messages10.MAX_PATH_COST);
-                    }else{
-                        solutions.add(new Solution(tempProblem.getId(), cheapestCost));
-                    }
+        }
+        showAdjacentMatrix();
+    }
+
+    private void solveProblems(List<Location> locations) throws NoDataInDbException{
+        Map<Integer, Integer> cities = new TreeMap<>();
+        for(int i = 0; i < locations.size(); i++){
+            cities.put(locations.get(i).getId(), convertToArrayId(locations.get(i).getId()));
+        }
+        List<Problem> problems = problemService.getAll(connection);
+        if(!problems.isEmpty()){
+            List<Solution> solutions = new ArrayList<>();
+            for(Problem tempProblem : problems){
+                int cheapestCost = findCheapestWayBetween(tempProblem.getFromId(), tempProblem.getToId(), cities);
+                if(cheapestCost > Messages10.MAX_PATH_COST){
+                    LOGGER.error("The way can not be greater than " + Messages10.MAX_PATH_COST);
+                }else{
+                    solutions.add(new Solution(tempProblem.getId(), cheapestCost));
+                    LOGGER.info(String.format("solution for problem %d = %d", tempProblem.getId(), cheapestCost));
                 }
-                solutionService.addAll(solutions);
-            }else{
-                System.out.println("There are no any problems!!");
             }
+            solutionService.addAll(solutions, connection);
+            LOGGER.info("Done!");
+        }else{
+            System.out.println("There are no problems to solve!!");
+            LOGGER.error("we don`t have any problems in controller!!");
+            throw new NoDataInDbException("Problems in db are empty!");
         }
     }
 
