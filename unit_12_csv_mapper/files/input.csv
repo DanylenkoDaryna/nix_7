@@ -1,0 +1,6 @@
+id,firstName,middleName,lastName ,birthDate ,gender ,active,engagementScore
+1 ,John     ,Richard   ,Doe      ,01-03-1990,MALE   ,true  ,0.46
+2 ,Anny     ,Sunflower ,Leonhurt ,19-02-1992,FEMALE ,true  ,0.77
+3 ,Sam      ,Samuel    ,Vimes    ,01-03-1999,MALE   ,true  ,0.86
+4 ,Brad     ,Toaster   ,Butter   ,05-05-1995,MALE   ,false ,0.06
+5 ,Lina     ,Erik      ,Wachowski,29-10-1987,UNKNOWN,true  ,0.50

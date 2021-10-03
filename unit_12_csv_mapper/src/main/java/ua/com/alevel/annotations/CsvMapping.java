@@ -1,4 +1,4 @@
-package ua.com.alevel.mapper;
+package ua.com.alevel.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface CsvMapping{
 
-    public String value() default "no field";
+    String value() default "no field";
 }

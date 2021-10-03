@@ -43,3 +43,7 @@ cd ..
 cd unit_11_reflection
 call unit_11_start.bat
 cd ..
+
+cd unit_12_reflection
+call unit_12_start.bat
+cd ..

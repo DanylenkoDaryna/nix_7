@@ -1,6 +1,6 @@
 package ua.com.alevel.entity;
 
-import ua.com.alevel.mapper.CsvMapping;
+import ua.com.alevel.annotations.CsvMapping;
 
 import java.time.LocalDate;
 
@@ -33,21 +33,12 @@ public class UserDetails{
     public UserDetails(){
     }
 
-    public UserDetails(long id, String firstName, String lastName, LocalDate birthDate, Gender gender, boolean active, double engagementScore){
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.active = active;
-        this.engagementScore = engagementScore;
-    }
-
     @Override
     public String toString(){
         return "UserDetails{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 ", gender=" + gender +
