@@ -1,7 +1,7 @@
 package ua.com.alevel.entity;
 
 import ua.com.alevel.Main11;
-import ua.com.alevel.service.PropertyKey;
+import ua.com.alevel.annotations.PropertyKey;
 
 import java.util.Date;
 
