@@ -2,63 +2,77 @@ package ua.com.alevel.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.com.alevel.cmd.Messages10;
-import ua.com.alevel.config.ObjectFactory;
+import ua.com.alevel.dao.*;
 import ua.com.alevel.entity.Location;
 import ua.com.alevel.entity.Problem;
 import ua.com.alevel.entity.Route;
 import ua.com.alevel.entity.Solution;
 import ua.com.alevel.exceptions.NoDataInDbException;
-import ua.com.alevel.service.LocationService;
-import ua.com.alevel.service.ProblemService;
-import ua.com.alevel.service.RouteService;
-import ua.com.alevel.service.SolutionService;
+import ua.com.alevel.service.*;
 
 import java.sql.Connection;
 import java.util.*;
 
 public class App10Controller{
 
-    private static Connection connection;
     private static final Logger LOGGER = LoggerFactory.getLogger(App10Controller.class);
-    private static RouteService routeService = ObjectFactory.getInstance().getImplClass(RouteService.class);
-    private static LocationService locationService = ObjectFactory.getInstance().getImplClass(LocationService.class);
-    private static ProblemService problemService = ObjectFactory.getInstance().getImplClass(ProblemService.class);
-    private static SolutionService solutionService = ObjectFactory.getInstance().getImplClass(SolutionService.class);
+    private RouteService routeService;
+    private LocationService locationService;
+    private ProblemService problemService;
+    private SolutionService solutionService;
 
+    private static final int OFFSET_CUZ_ARRAY_STARTS_WITH_ZERO = 1;
+    private static final int MAX_PATH_COST = 200000;
     private int[][] adjacentMatrix;
 
     private App10Controller(){
     }
 
     public App10Controller(Connection con){
-        connection = con;
+        RouteDao routeDao = new RouteDaoImpl(con);
+        routeService = new RouteServiceImpl(routeDao);
+        LocationDao locationDao = new LocationDaoImpl(con);
+        locationService = new LocationServiceImpl(locationDao);
+        ProblemDao problemDao = new ProblemDaoImpl(con);
+        problemService = new ProblemServiceImpl(problemDao);
+        SolutionDao solutionDao = new SolutionDaoImpl(con);
+        solutionService = new SolutionServiceImpl(solutionDao);
     }
 
     public void startApp(){
-        try{
-            findLocations();
-        }catch(NoDataInDbException e){
-            LOGGER.error("we don`t have data for app!!", e);
+        findProblems();
+    }
+
+    private void findProblems(){
+        List<Problem> problems = problemService.getAll();
+        if(!problems.isEmpty()){
+            try{
+                findLocations(problems);
+            }catch(NoDataInDbException e){
+                LOGGER.error("we don`t have data for app!!", e);
+            }
+        }else{
+            System.out.println("There are no problems to solve!!");
+            LOGGER.info("we don`t have any problems to solve!!");
         }
     }
 
-    private void findLocations() throws NoDataInDbException{
-        List<Location> locations = locationService.getAll(connection);
+    private void findLocations(List<Problem> problems) throws NoDataInDbException{
+        List<Location> locations = locationService.getAll();
         if(locations.isEmpty()){
-            LOGGER.error("we don`t have any locations in controller!!");
+            LOGGER.error("we don`t have any locations in service!!");
             throw new NoDataInDbException("Locations in db are empty!");
         }else{
             makeMatrix(locations.size());
-            solveProblems(locations);
+            solveProblems(locations, problems);
         }
     }
 
     private void makeMatrix(int size) throws NoDataInDbException{
         adjacentMatrix = new int[size][size];
-        List<Route> routes = routeService.getAll(connection);
+        List<Route> routes = routeService.getAll();
         if(routes.isEmpty()){
-            LOGGER.error("we don`t have any routes in controller!!");
+            LOGGER.error("we don`t have any routes in service!!");
             throw new NoDataInDbException("Routes in db are empty!");
         }else{
             for(int i = 0; i < routes.size(); i++){
@@ -70,34 +84,28 @@ public class App10Controller{
         showAdjacentMatrix();
     }
 
-    private void solveProblems(List<Location> locations) throws NoDataInDbException{
+    private void solveProblems(List<Location> locations, List<Problem> problems){
         Map<Integer, Integer> cities = new TreeMap<>();
         for(int i = 0; i < locations.size(); i++){
             cities.put(locations.get(i).getId(), convertToArrayId(locations.get(i).getId()));
         }
-        List<Problem> problems = problemService.getAll(connection);
-        if(!problems.isEmpty()){
-            List<Solution> solutions = new ArrayList<>();
-            for(Problem tempProblem : problems){
-                int cheapestCost = findCheapestWayBetween(tempProblem.getFromId(), tempProblem.getToId(), cities);
-                if(cheapestCost > Messages10.MAX_PATH_COST){
-                    LOGGER.error("The way can not be greater than " + Messages10.MAX_PATH_COST);
-                }else{
-                    solutions.add(new Solution(tempProblem.getId(), cheapestCost));
-                    LOGGER.info(String.format("solution for problem %d = %d", tempProblem.getId(), cheapestCost));
-                }
+        List<Solution> solutions = new ArrayList<>();
+        for(Problem tempProblem : problems){
+            int cheapestCost = findCheapestWayBetween(tempProblem.getFromId(), tempProblem.getToId(), cities);
+            if(cheapestCost > MAX_PATH_COST){
+                LOGGER.error("The way can not be greater than " + MAX_PATH_COST);
+            }else{
+                solutions.add(new Solution(tempProblem.getId(), cheapestCost));
+                LOGGER.info(String.format(
+                        "solution for problem %d = %d", tempProblem.getId(), cheapestCost));
             }
-            solutionService.addAll(solutions, connection);
-            LOGGER.info("Done!");
-        }else{
-            System.out.println("There are no problems to solve!!");
-            LOGGER.error("we don`t have any problems in controller!!");
-            throw new NoDataInDbException("Problems in db are empty!");
         }
+        solutionService.addAll(solutions);
+        LOGGER.info("All unsolved problems were solved!");
     }
 
     private int convertToArrayId(int id){
-        return id - Messages10.OFFSET_CUZ_ARRAY_STARTS_WITH_ZERO;
+        return id - OFFSET_CUZ_ARRAY_STARTS_WITH_ZERO;
     }
 
     private void showAdjacentMatrix(){
@@ -124,7 +132,7 @@ public class App10Controller{
             departureId = cities.get(departure);
             destinationId = cities.get(destination);
         }
-        int minCost = Messages10.MAX_PATH_COST;
+        int minCost = MAX_PATH_COST;
         for(int j = 0; j < adjacentMatrix.length; j++){
             int countIterationCost = 0;
             if(adjacentMatrix[departureId][j] != 0){

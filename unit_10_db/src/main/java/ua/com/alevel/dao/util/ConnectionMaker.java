@@ -1,4 +1,4 @@
-package ua.com.alevel.db.util;
+package ua.com.alevel.dao.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,8 +11,8 @@ public class ConnectionMaker{
         System.out.println("This is util class!");
     }
 
-    public static Connection getConnection() throws SQLException{
-        Properties properties = PropertyManager.loadProperties();
+    public static Connection getConnection(String pathToProps) throws SQLException{
+        Properties properties = PropertyManager.loadProperties(pathToProps);
         String url = properties.getProperty("url");
         return DriverManager.getConnection(url, properties);
     }

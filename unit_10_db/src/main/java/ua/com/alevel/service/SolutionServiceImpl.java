@@ -1,18 +1,20 @@
 package ua.com.alevel.service;
 
-import ua.com.alevel.config.ObjectFactory;
 import ua.com.alevel.dao.SolutionDao;
 import ua.com.alevel.entity.Solution;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class SolutionServiceImpl implements SolutionService{
 
-    private SolutionDao solutionDao = ObjectFactory.getInstance().getImplClass(SolutionDao.class);
+    private SolutionDao solutionDao;
+
+    public SolutionServiceImpl(SolutionDao dao){
+        this.solutionDao = dao;
+    }
 
     @Override
-    public void addAll(List<Solution> solutions, Connection connection){
-        solutionDao.addAll(solutions, connection);
+    public void addAll(List<Solution> solutions){
+        solutionDao.addAll(solutions);
     }
 }
